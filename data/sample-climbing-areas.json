@@ -1,0 +1,32 @@
+{
+  "yosemite": {
+    "name": "Yosemite National Park",
+    "latitude": 37.8651,
+    "longitude": -119.5383,
+    "climbingType": ["trad", "bouldering"]
+  },
+  "redrocks": {
+    "name": "Red Rock Canyon",
+    "latitude": 36.1315,
+    "longitude": -115.4266,
+    "climbingType": ["sport", "trad", "bouldering"]
+  },
+  "joshuatree": {
+    "name": "Joshua Tree National Park",
+    "latitude": 33.8734,
+    "longitude": -115.9010,
+    "climbingType": ["trad", "bouldering"]
+  },
+  "eldorado": {
+    "name": "Eldorado Canyon",
+    "latitude": 39.9308,
+    "longitude": -105.2917,
+    "climbingType": ["trad", "sport"]
+  },
+  "gunks": {
+    "name": "The Gunks",
+    "latitude": 41.7465,
+    "longitude": -74.1874,
+    "climbingType": ["trad"]
+  }
+}
