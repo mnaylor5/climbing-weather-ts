@@ -28,5 +28,11 @@
     "latitude": 41.7465,
     "longitude": -74.1874,
     "climbingType": ["trad"]
+  },
+  "stonefort": {
+    "name": "Stone Fort (Little Rock City)",
+    "latitude": 34.9759,
+    "longitude": -85.3397,
+    "climbingType": ["bouldering"]
   }
 }
