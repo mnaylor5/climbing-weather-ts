@@ -6,11 +6,11 @@ A TypeScript React application that fetches and visualizes weather forecasts for
 
 ## Features
 
-- **Beautiful, responsive design** that works equally well on mobile devices and desktop browsers
+- **Responsive design** for mobile and desktop browsers
 - **Area selection** - Choose from 6 premier climbing destinations including the newly added Stone Fort in Tennessee
 - **Dual forecast modes**:
   - **Hourly forecasts** - Interactive line chart showing 24-hour temperature trends
-  - **12-hour forecasts** - Comprehensive table with 7-day outlook including high/low temps, humidity, precipitation, and wind data
+  - **Daily forecasts** - Comprehensive table showing separate daytime and nighttime periods with temperatures, precipitation, and wind data
 - **Real-time data** from the National Weather Service API
 - **Fallback mock data** for development and demonstration purposes
 

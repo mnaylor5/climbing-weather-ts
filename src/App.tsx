@@ -92,7 +92,7 @@ function App() {
               className={`toggle-button ${forecastType === '12hour' ? 'active' : ''}`}
               onClick={() => setForecastType('12hour')}
             >
-              12-Hour
+              Daily
             </button>
             <button
               className={`toggle-button ${forecastType === 'hourly' ? 'active' : ''}`}

@@ -28,99 +28,75 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
     );
   };
 
-  const formatTime = (timeString: string) => {
-    const date = new Date(timeString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const groupPeriodsByDay = () => {
+  const renderForecastPeriods = () => {
     const periods = data.properties.periods.slice(0, 14); // Show next 7 days (14 periods)
-    const grouped: { [key: string]: any[] } = {};
     
-    periods.forEach(period => {
-      const date = new Date(period.startTime);
-      const dateKey = date.toDateString();
-      
-      if (!grouped[dateKey]) {
-        grouped[dateKey] = [];
-      }
-      grouped[dateKey].push(period);
-    });
-    
-    return Object.entries(grouped).map(([dateKey, periodGroup]) => {
-      const dayPeriods = periodGroup;
-      const dayPeriod = dayPeriods.find(p => p.isDaytime) || dayPeriods[0];
-      const nightPeriod = dayPeriods.find(p => !p.isDaytime);
-      
-      return {
-        date: dateKey,
-        displayDate: formatTime(dayPeriod.startTime),
-        highTemp: dayPeriod ? dayPeriod.temperature : null,
-        lowTemp: nightPeriod ? nightPeriod.temperature : null,
-        unit: dayPeriod.temperatureUnit,
-        humidity: dayPeriod.relativeHumidity?.value || null,
-        precipitation: dayPeriod.probabilityOfPrecipitation?.value || null,
-        forecast: dayPeriod.shortForecast,
-        windSpeed: dayPeriod.windSpeed,
-        windDirection: dayPeriod.windDirection,
+    return periods.map((period) => {
+      const formatTime = (timeString: string) => {
+        const date = new Date(timeString);
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1);
+        
+        if (date.toDateString() === today.toDateString()) {
+          return period.isDaytime ? 'Today' : 'Tonight';
+        } else if (date.toDateString() === tomorrow.toDateString()) {
+          return period.isDaytime ? 'Tomorrow' : 'Tomorrow Night';
+        } else {
+          return period.name;
+        }
       };
-    }).slice(0, 7); // Limit to 7 days
+
+      return {
+        ...period,
+        displayName: formatTime(period.startTime),
+        precipitation: period.probabilityOfPrecipitation?.value || null,
+      };
+    });
   };
 
-  const dailyForecasts = groupPeriodsByDay();
+  const forecastPeriods = renderForecastPeriods();
 
   return (
     <div>
       <h2 style={{ marginBottom: '20px', color: '#2d3748', fontSize: '1.5rem', fontWeight: '600' }}>
-        7-Day Forecast
+        Daily Forecast
       </h2>
       
       <table className="forecast-table">
         <thead>
           <tr>
-            <th>Day</th>
-            <th>High / Low</th>
+            <th>Period</th>
+            <th>Temperature</th>
             <th>Conditions</th>
-            <th>Humidity</th>
             <th>Precipitation</th>
             <th>Wind</th>
           </tr>
         </thead>
         <tbody>
-          {dailyForecasts.map((day, index) => (
-            <tr key={day.date}>
+          {forecastPeriods.map((period, index) => (
+            <tr key={`${period.startTime}-${index}`}>
               <td>
                 <div className="day-name">
-                  {index === 0 ? 'Today' : day.displayDate}
+                  {period.displayName}
                 </div>
               </td>
               <td>
                 <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  {day.highTemp && formatTemperature(day.highTemp, day.unit, true)}
-                  {day.highTemp && day.lowTemp && <span style={{ color: '#a0aec0' }}>/</span>}
-                  {day.lowTemp && formatTemperature(day.lowTemp, day.unit, false)}
+                  {formatTemperature(period.temperature, period.temperatureUnit, period.isDaytime)}
                 </div>
               </td>
               <td>
                 <div style={{ fontSize: '0.9rem' }}>
-                  {day.forecast}
+                  {period.shortForecast}
                 </div>
               </td>
               <td>
-                <div style={{ fontSize: '0.9rem' }}>
-                  {day.humidity ? `${day.humidity}%` : 'N/A'}
-                </div>
-              </td>
-              <td>
-                {formatPrecipitation(day.precipitation)}
+                {formatPrecipitation(period.precipitation)}
               </td>
               <td>
                 <div style={{ fontSize: '0.9rem' }}>
-                  {day.windSpeed} {day.windDirection}
+                  {period.windSpeed} {period.windDirection}
                 </div>
               </td>
             </tr>
@@ -129,7 +105,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
       </table>
       
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
-        <strong>Note:</strong> Forecast data provided by the National Weather Service. High/low temperatures and conditions are representative of daytime and nighttime periods.
+        <strong>Note:</strong> Forecast data provided by the National Weather Service. Showing separate daytime and nighttime periods for detailed planning.
       </div>
     </div>
   );
