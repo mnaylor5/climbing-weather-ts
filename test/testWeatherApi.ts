@@ -1,30 +1,41 @@
 import sample_climbing_areas from "../data/sample-climbing-areas.json";
-import { makeWeatherApiCall } from "../src/weatherData/weatherApi";
+import { getWeatherForArea, ClimbingAreaData } from "../src/weatherData/weatherApi";
 
 console.log("sample_climbing_areas", sample_climbing_areas);
 
-const testArea = sample_climbing_areas["redrocks"];
+const areas = sample_climbing_areas as ClimbingAreaData;
+const testArea = areas["redrocks"];
 console.log("Getting weather for", testArea.name);
 
-makeWeatherApiCall(
-    testArea.latitude,
-    testArea.longitude
-)
-    .then((locationData) => {
-        console.log("Fetching 12hr forecast data...");
-        return fetch(locationData.properties.forecast);
-    })
-    .then((forecastResponse) => {
-        if (!forecastResponse.ok) {
-            throw new Error(`Error fetching forecast data: ${forecastResponse.statusText}`);
-        }
-        return forecastResponse.json();
-    })
+// Test 12-hour forecast
+console.log("\n--- Testing 12-hour forecast ---");
+getWeatherForArea(testArea, '12hour')
     .then((forecastData) => {
-        console.log("Next 6 periods:", forecastData.properties.periods.slice(0, 6));
-        return forecastData;
+        console.log("12-hour forecast periods:", forecastData.properties.periods.slice(0, 3));
     })
     .catch((error) => {
-        console.error("Error fetching weather data:", error);
+        console.error("Error fetching 12-hour weather data:", error);
+    });
+
+// Test hourly forecast
+console.log("\n--- Testing hourly forecast ---");
+getWeatherForArea(testArea, 'hourly')
+    .then((forecastData) => {
+        console.log("Hourly forecast periods:", forecastData.properties.periods.slice(0, 3));
+    })
+    .catch((error) => {
+        console.error("Error fetching hourly weather data:", error);
+    });
+
+// Test the new Stone Fort area
+console.log("\n--- Testing Stone Fort area ---");
+const stoneFort = areas["stonefort"];
+console.log("Getting weather for", stoneFort.name);
+getWeatherForArea(stoneFort, '12hour')
+    .then((forecastData) => {
+        console.log("Stone Fort forecast periods:", forecastData.properties.periods.slice(0, 2));
+    })
+    .catch((error) => {
+        console.error("Error fetching Stone Fort weather data:", error);
     });
 
