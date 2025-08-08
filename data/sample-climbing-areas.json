@@ -34,5 +34,11 @@
     "latitude": 34.9759,
     "longitude": -85.3397,
     "climbingType": ["bouldering"]
+  },
+  "tensleep": {
+    "name": "Ten Sleep Canyon",
+    "latitude": 44.0342,
+    "longitude": -107.4503,
+    "climbingType": ["sport", "trad"]
   }
 }

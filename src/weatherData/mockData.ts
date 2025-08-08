@@ -1,7 +1,7 @@
 // Mock data for development and demonstration purposes
 export const mockHourlyData = {
   properties: {
-    periods: Array.from({ length: 24 }, (_, i) => {
+    periods: Array.from({ length: 48 }, (_, i) => {
       const startTime = new Date();
       startTime.setHours(startTime.getHours() + i);
       const endTime = new Date(startTime);
