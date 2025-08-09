@@ -62,8 +62,8 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ data }) => {
       temperatureUnit: period.temperatureUnit,
       shortForecast: period.shortForecast,
       windSpeed: period.windSpeed,
-      humidity: period.relativeHumidity?.value || null,
-      precipitation: period.probabilityOfPrecipitation?.value || null,
+      humidity: period.relativeHumidity?.value ?? null,
+      precipitation: period.probabilityOfPrecipitation?.value ?? null,
     };
   });
 
