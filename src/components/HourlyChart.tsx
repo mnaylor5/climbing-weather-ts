@@ -62,14 +62,20 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ data }) => {
       temperatureUnit: period.temperatureUnit,
       shortForecast: period.shortForecast,
       windSpeed: period.windSpeed,
-      humidity: period.relativeHumidity?.value || null,
-      precipitation: period.probabilityOfPrecipitation?.value || null,
+      humidity: period.relativeHumidity?.value ?? null,
+      precipitation: period.probabilityOfPrecipitation?.value ?? null,
     };
   });
 
   const formatTooltip = (value: any, name: string, props: any) => {
     if (name === 'temperature') {
       return [`${value}°${props.payload.temperatureUnit}`, 'Temperature'];
+    }
+    if (name === 'humidity') {
+      return [`${value}%`, 'Humidity'];
+    }
+    if (name === 'precipitation') {
+      return [`${value}%`, 'Precipitation'];
     }
     return [value, name];
   };
@@ -87,7 +93,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ data }) => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
         <h2 style={{ color: '#2d3748', fontSize: '1.5rem', fontWeight: '600', margin: 0 }}>
-          48-Hour Temperature Forecast
+          48-Hour Weather Forecast
         </h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <label htmlFor="start-time-select" style={{ fontSize: '0.9rem', color: '#4a5568', fontWeight: '500' }}>
@@ -139,7 +145,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ data }) => {
             <YAxis 
               stroke="#4a5568"
               fontSize={12}
-              label={{ value: 'Temperature (°F)', angle: -90, position: 'insideLeft' }}
+              label={{ value: 'Value', angle: -90, position: 'insideLeft' }}
             />
             <Tooltip 
               formatter={formatTooltip}
@@ -159,11 +165,63 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ data }) => {
               dot={{ fill: '#2196f3', strokeWidth: 2, r: 4 }}
               activeDot={{ r: 6, stroke: '#2196f3', strokeWidth: 2, fill: 'white' }}
             />
+            <Line 
+              type="monotone" 
+              dataKey="humidity" 
+              stroke="#22c55e" 
+              strokeWidth={2}
+              dot={{ fill: '#22c55e', strokeWidth: 2, r: 3 }}
+              activeDot={{ r: 5, stroke: '#22c55e', strokeWidth: 2, fill: 'white' }}
+            />
+            <Line 
+              type="monotone" 
+              dataKey="precipitation" 
+              stroke="#f59e0b" 
+              strokeWidth={2}
+              dot={{ fill: '#f59e0b', strokeWidth: 2, r: 3 }}
+              activeDot={{ r: 5, stroke: '#f59e0b', strokeWidth: 2, fill: 'white' }}
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
+      <div style={{ 
+        marginTop: '10px', 
+        display: 'flex', 
+        justifyContent: 'center', 
+        gap: '20px', 
+        fontSize: '0.9rem', 
+        color: '#4a5568' 
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <div style={{ 
+            width: '16px', 
+            height: '3px', 
+            backgroundColor: '#2196f3', 
+            borderRadius: '2px' 
+          }}></div>
+          Temperature (°F)
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <div style={{ 
+            width: '16px', 
+            height: '3px', 
+            backgroundColor: '#22c55e', 
+            borderRadius: '2px' 
+          }}></div>
+          Humidity (%)
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+          <div style={{ 
+            width: '16px', 
+            height: '3px', 
+            backgroundColor: '#f59e0b', 
+            borderRadius: '2px' 
+          }}></div>
+          Precipitation (%)
+        </div>
+      </div>
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
-        <strong>Note:</strong> Showing 48 hours of temperature data starting from the selected time. Hover over points for detailed information.
+        <strong>Note:</strong> Showing 48 hours of temperature, humidity, and precipitation data starting from the selected time. Hover over points for detailed information.
       </div>
     </div>
   );

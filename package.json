@@ -10,7 +10,12 @@
     "preview": "vite preview",
     "test": "tsx test/testWeatherApi.ts"
   },
-  "keywords": ["weather", "climbing", "typescript", "react"],
+  "keywords": [
+    "weather",
+    "climbing",
+    "typescript",
+    "react"
+  ],
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
@@ -19,8 +24,8 @@
     "recharts": "^2.8.0"
   },
   "devDependencies": {
-    "@types/react": "^18.2.37",
-    "@types/react-dom": "^18.2.15",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.1.1",
     "tsx": "^4.6.0",
     "typescript": "^5.2.2",
