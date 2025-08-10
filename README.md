@@ -52,7 +52,27 @@ Before you begin, ensure you have the following installed:
 | `npm run dev` | Starts the development server with hot reload |
 | `npm run build` | Builds the app for production to `dist/` folder |
 | `npm run preview` | Preview the production build locally |
-| `npm test` | Run weather API tests |
+| `npm test` | Run all unit tests |
+| `npm run test:watch` | Run tests in watch mode |
+| `npm run test:coverage` | Run tests with coverage report |
+| `npm run test:api` | Run API integration tests |
+
+## 🧪 Testing
+
+### Test Suite (94 tests total)
+- **API Integration**: Weather service calls, error scenarios, data parsing
+- **Component Testing**: UI behavior, user interactions, loading states
+- **Data Validation**: Mock data generation, edge cases, null handling
+- **Integration Testing**: Component communication and state management
+
+### Running Tests
+```bash
+npm test              # Run all tests
+npm run test:watch    # Watch mode for development
+npm run test:coverage # Generate coverage report
+```
+
+The test suite ensures reliability and provides confidence for refactoring and new feature development.
 
 ## 🏗️ Project Structure
 
@@ -94,7 +114,7 @@ This application integrates with the **National Weather Service API** to provide
 - **Charts & Visualization**: [Recharts](https://recharts.org/) for interactive weather charts
 - **Styling**: CSS3 with CSS Variables for theming
 - **API**: [National Weather Service API](https://www.weather.gov/documentation/services-web-api) for real-time weather data
-- **Testing**: Custom TypeScript test runner with tsx
+- **Testing**: [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) with 92%+ coverage
 
 ## 🤝 Contributing
 
