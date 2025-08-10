@@ -1,0 +1,180 @@
+import { render, screen } from '@testing-library/react';
+import ForecastTable from '../ForecastTable';
+import { ForecastResponse } from '../../weatherData/weatherApi';
+
+const mockForecastData: ForecastResponse = {
+  properties: {
+    periods: [
+      {
+        number: 1,
+        name: 'Today',
+        startTime: '2025-08-09T12:00:00-07:00',
+        endTime: '2025-08-09T18:00:00-07:00',
+        isDaytime: true,
+        temperature: 85,
+        temperatureUnit: 'F',
+        windSpeed: '10 mph',
+        windDirection: 'SW',
+        icon: 'https://api.weather.gov/icons/land/day/few?size=medium',
+        shortForecast: 'Sunny',
+        detailedForecast: 'Sunny skies with light winds.',
+        probabilityOfPrecipitation: {
+          unitCode: 'wmoUnit:percent',
+          value: 20
+        },
+        relativeHumidity: {
+          unitCode: 'wmoUnit:percent',
+          value: 45
+        }
+      },
+      {
+        number: 2,
+        name: 'Tonight',
+        startTime: '2025-08-09T18:00:00-07:00',
+        endTime: '2025-08-10T06:00:00-07:00',
+        isDaytime: false,
+        temperature: 65,
+        temperatureUnit: 'F',
+        windSpeed: '5 mph',
+        windDirection: 'W',
+        icon: 'https://api.weather.gov/icons/land/night/clear?size=medium',
+        shortForecast: 'Clear',
+        detailedForecast: 'Clear skies overnight.',
+        probabilityOfPrecipitation: {
+          unitCode: 'wmoUnit:percent',
+          value: null
+        },
+        relativeHumidity: {
+          unitCode: 'wmoUnit:percent',
+          value: 60
+        }
+      }
+    ]
+  }
+};
+
+describe('ForecastTable', () => {
+  it('renders the forecast table with correct title', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('Daily Forecast')).toBeInTheDocument();
+  });
+
+  it('renders table headers correctly', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('Period')).toBeInTheDocument();
+    expect(screen.getByText('Temperature')).toBeInTheDocument();
+    expect(screen.getByText('Conditions')).toBeInTheDocument();
+    expect(screen.getByText('Precipitation')).toBeInTheDocument();
+    expect(screen.getByText('Wind')).toBeInTheDocument();
+  });
+
+  it('displays forecast periods correctly', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('Today')).toBeInTheDocument();
+    expect(screen.getByText('Tonight')).toBeInTheDocument();
+  });
+
+  it('displays temperatures with correct units', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('85°F')).toBeInTheDocument();
+    expect(screen.getByText('65°F')).toBeInTheDocument();
+  });
+
+  it('displays weather conditions', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('Sunny')).toBeInTheDocument();
+    expect(screen.getByText('Clear')).toBeInTheDocument();
+  });
+
+  it('displays wind information', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('10 mph SW')).toBeInTheDocument();
+    expect(screen.getByText('5 mph W')).toBeInTheDocument();
+  });
+
+  it('displays precipitation information correctly', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText('20%')).toBeInTheDocument();
+    expect(screen.getByText('N/A')).toBeInTheDocument();
+  });
+
+  it('applies correct CSS classes for day and night temperatures', () => {
+    const { container } = render(<ForecastTable data={mockForecastData} />);
+    
+    const temperatures = container.querySelectorAll('.temperature');
+    expect(temperatures[0]).toHaveClass('high'); // Day temperature
+    expect(temperatures[1]).toHaveClass('low');  // Night temperature
+  });
+
+  it('renders the informational note', () => {
+    render(<ForecastTable data={mockForecastData} />);
+    
+    expect(screen.getByText(/Forecast data provided by the National Weather Service/)).toBeInTheDocument();
+  });
+
+  it('limits display to 14 periods', () => {
+    const manyPeriods: ForecastResponse = {
+      properties: {
+        periods: Array.from({ length: 20 }, (_, i) => ({
+          number: i + 1,
+          name: `Period ${i + 1}`,
+          startTime: '2025-08-09T12:00:00-07:00',
+          endTime: '2025-08-09T18:00:00-07:00',
+          isDaytime: i % 2 === 0,
+          temperature: 75,
+          temperatureUnit: 'F',
+          windSpeed: '10 mph',
+          windDirection: 'SW',
+          icon: 'https://api.weather.gov/icons/land/day/few?size=medium',
+          shortForecast: 'Sunny',
+          detailedForecast: 'Sunny skies.',
+          probabilityOfPrecipitation: {
+            unitCode: 'wmoUnit:percent',
+            value: 0
+          }
+        }))
+      }
+    };
+
+    const { container } = render(<ForecastTable data={manyPeriods} />);
+    const rows = container.querySelectorAll('tbody tr');
+    expect(rows).toHaveLength(14);
+  });
+
+  it('handles periods with null precipitation values', () => {
+    const dataWithNullPrecip: ForecastResponse = {
+      properties: {
+        periods: [
+          {
+            number: 1,
+            name: 'Today',
+            startTime: '2025-08-09T12:00:00-07:00',
+            endTime: '2025-08-09T18:00:00-07:00',
+            isDaytime: true,
+            temperature: 85,
+            temperatureUnit: 'F',
+            windSpeed: '10 mph',
+            windDirection: 'SW',
+            icon: 'https://api.weather.gov/icons/land/day/few?size=medium',
+            shortForecast: 'Sunny',
+            detailedForecast: 'Sunny skies.',
+            probabilityOfPrecipitation: {
+              unitCode: 'wmoUnit:percent',
+              value: null
+            }
+          }
+        ]
+      }
+    };
+
+    render(<ForecastTable data={dataWithNullPrecip} />);
+    expect(screen.getByText('N/A')).toBeInTheDocument();
+  });
+});
