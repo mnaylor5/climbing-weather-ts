@@ -4,60 +4,60 @@ interface ForecastTableProps {
   data: ForecastResponse;
 }
 
+const getWeatherEmoji = (forecast: string): string => {
+  const condition = forecast.toLowerCase();
+  
+  // Sunny/Clear conditions
+  if (condition.includes('sunny') || condition.includes('clear')) {
+    return '☀️';
+  }
+  
+  // Partly cloudy/few clouds
+  if (condition.includes('partly') || condition.includes('few')) {
+    return '⛅';
+  }
+  
+  // Mostly cloudy/overcast
+  if (condition.includes('cloudy') || condition.includes('overcast') || condition.includes('mostly')) {
+    return '☁️';
+  }
+  
+  // Rain conditions
+  if (condition.includes('rain') || condition.includes('shower')) {
+    if (condition.includes('thunderstorm') || condition.includes('storm')) {
+      return '⛈️';
+    }
+    return '🌧️';
+  }
+  
+  // Snow conditions
+  if (condition.includes('snow') || condition.includes('flurr')) {
+    return '❄️';
+  }
+  
+  // Fog/Mist
+  if (condition.includes('fog') || condition.includes('mist')) {
+    return '🌫️';
+  }
+  
+  // Wind
+  if (condition.includes('wind')) {
+    return '💨';
+  }
+  
+  // Default for unknown conditions
+  return '🌤️';
+};
+
+const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
+  return (
+    <span className={`temperature ${isHigh ? 'high' : 'low'}`}>
+      {temp}°{unit}
+    </span>
+  );
+};
+
 const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
-  const getWeatherEmoji = (forecast: string): string => {
-    const condition = forecast.toLowerCase();
-    
-    // Sunny/Clear conditions
-    if (condition.includes('sunny') || condition.includes('clear')) {
-      return '☀️';
-    }
-    
-    // Partly cloudy/few clouds
-    if (condition.includes('partly') || condition.includes('few')) {
-      return '⛅';
-    }
-    
-    // Mostly cloudy/overcast
-    if (condition.includes('cloudy') || condition.includes('overcast') || condition.includes('mostly')) {
-      return '☁️';
-    }
-    
-    // Rain conditions
-    if (condition.includes('rain') || condition.includes('shower')) {
-      if (condition.includes('thunderstorm') || condition.includes('storm')) {
-        return '⛈️';
-      }
-      return '🌧️';
-    }
-    
-    // Snow conditions
-    if (condition.includes('snow') || condition.includes('flurr')) {
-      return '❄️';
-    }
-    
-    // Fog/Mist
-    if (condition.includes('fog') || condition.includes('mist')) {
-      return '🌫️';
-    }
-    
-    // Wind
-    if (condition.includes('wind')) {
-      return '💨';
-    }
-    
-    // Default for unknown conditions
-    return '🌤️';
-  };
-
-  const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
-    return (
-      <span className={`temperature ${isHigh ? 'high' : 'low'}`}>
-        {temp}°{unit}
-      </span>
-    );
-  };
-
   const renderForecastPeriods = () => {
     const periods = data.properties.periods.slice(0, 14); // Show next 7 days (14 periods)
     
