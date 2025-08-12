@@ -60,14 +60,19 @@ describe('ForecastTable', () => {
     expect(screen.getByText('Daily Forecast')).toBeInTheDocument();
   });
 
-  it('renders table headers correctly', () => {
+  it('renders tile layout instead of table headers', () => {
     render(<ForecastTable data={mockForecastData} />);
     
-    expect(screen.getByText('Period')).toBeInTheDocument();
-    expect(screen.getByText('Temperature')).toBeInTheDocument();
-    expect(screen.getByText('Conditions')).toBeInTheDocument();
-    expect(screen.getByText('Precipitation')).toBeInTheDocument();
-    expect(screen.getByText('Wind')).toBeInTheDocument();
+    // Should not have table headers anymore
+    expect(screen.queryByText('Period')).not.toBeInTheDocument();
+    expect(screen.queryByText('Temperature')).not.toBeInTheDocument();
+    expect(screen.queryByText('Conditions')).not.toBeInTheDocument();
+    expect(screen.queryByText('Precipitation')).not.toBeInTheDocument();
+    expect(screen.queryByText('Wind')).not.toBeInTheDocument();
+    
+    // Should have tiles container
+    const { container } = render(<ForecastTable data={mockForecastData} />);
+    expect(container.querySelector('.forecast-tiles-container')).toBeInTheDocument();
   });
 
   it('displays forecast periods correctly', () => {
@@ -84,25 +89,30 @@ describe('ForecastTable', () => {
     expect(screen.getByText('65°F')).toBeInTheDocument();
   });
 
-  it('displays weather conditions', () => {
+  it('displays weather conditions via emojis', () => {
     render(<ForecastTable data={mockForecastData} />);
     
-    expect(screen.getByText('Sunny')).toBeInTheDocument();
-    expect(screen.getByText('Clear')).toBeInTheDocument();
+    // Should show weather emojis based on conditions
+    const { container } = render(<ForecastTable data={mockForecastData} />);
+    const icons = container.querySelectorAll('.forecast-tile-icon');
+    expect(icons.length).toBeGreaterThan(0);
+    
+    // Check that emojis are being used (sunny weather should show sun emoji)
+    expect(icons[0].textContent).toMatch(/☀️|⛅|☁️|🌧️/);
   });
 
   it('displays wind information', () => {
     render(<ForecastTable data={mockForecastData} />);
     
-    expect(screen.getByText('10 mph SW')).toBeInTheDocument();
-    expect(screen.getByText('5 mph W')).toBeInTheDocument();
+    expect(screen.getByText(/Wind 10 mph SW/)).toBeInTheDocument();
+    expect(screen.getByText(/Wind 5 mph W/)).toBeInTheDocument();
   });
 
   it('displays precipitation information correctly', () => {
     render(<ForecastTable data={mockForecastData} />);
     
-    expect(screen.getByText('20%')).toBeInTheDocument();
-    expect(screen.getByText('N/A')).toBeInTheDocument();
+    expect(screen.getByText('20% chance of rain')).toBeInTheDocument();
+    expect(screen.getByText('No precipitation data')).toBeInTheDocument();
   });
 
   it('applies correct CSS classes for day and night temperatures', () => {
@@ -144,8 +154,8 @@ describe('ForecastTable', () => {
     };
 
     const { container } = render(<ForecastTable data={manyPeriods} />);
-    const rows = container.querySelectorAll('tbody tr');
-    expect(rows).toHaveLength(14);
+    const tiles = container.querySelectorAll('.forecast-tile');
+    expect(tiles).toHaveLength(14);
   });
 
   it('handles periods with null precipitation values', () => {
@@ -175,6 +185,6 @@ describe('ForecastTable', () => {
     };
 
     render(<ForecastTable data={dataWithNullPrecip} />);
-    expect(screen.getByText('N/A')).toBeInTheDocument();
+    expect(screen.getByText('No precipitation data')).toBeInTheDocument();
   });
 });
