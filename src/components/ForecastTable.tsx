@@ -111,7 +111,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
               
               <div className="forecast-tile-precipitation">
                 {period.precipitation !== null && period.precipitation !== undefined 
-                  ? `${period.precipitation}% chance of rain`
+                  ? `Precip. chance: ${period.precipitation}%`
                   : 'No precipitation data'
                 }
               </div>

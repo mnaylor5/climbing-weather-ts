@@ -111,7 +111,7 @@ describe('ForecastTable', () => {
   it('displays precipitation information correctly', () => {
     render(<ForecastTable data={mockForecastData} />);
     
-    expect(screen.getByText('20% chance of rain')).toBeInTheDocument();
+    expect(screen.getByText('Precip. chance: 20%')).toBeInTheDocument();
     expect(screen.getByText('No precipitation data')).toBeInTheDocument();
   });
 
