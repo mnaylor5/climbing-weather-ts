@@ -4,30 +4,60 @@ interface ForecastTableProps {
   data: ForecastResponse;
 }
 
+const getWeatherEmoji = (forecast: string): string => {
+  const condition = forecast.toLowerCase();
+  
+  // Sunny/Clear conditions
+  if (condition.includes('sunny') || condition.includes('clear')) {
+    return '☀️';
+  }
+  
+  // Partly cloudy/few clouds
+  if (condition.includes('partly') || condition.includes('few')) {
+    return '⛅';
+  }
+  
+  // Mostly cloudy/overcast
+  if (condition.includes('cloudy') || condition.includes('overcast') || condition.includes('mostly')) {
+    return '☁️';
+  }
+  
+  // Rain conditions
+  if (condition.includes('rain') || condition.includes('shower')) {
+    if (condition.includes('thunderstorm') || condition.includes('storm')) {
+      return '⛈️';
+    }
+    return '🌧️';
+  }
+  
+  // Snow conditions
+  if (condition.includes('snow') || condition.includes('flurr')) {
+    return '❄️';
+  }
+  
+  // Fog/Mist
+  if (condition.includes('fog') || condition.includes('mist')) {
+    return '🌫️';
+  }
+  
+  // Wind
+  if (condition.includes('wind')) {
+    return '💨';
+  }
+  
+  // Default for unknown conditions
+  return '🌤️';
+};
+
+const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
+  return (
+    <span className={`temperature ${isHigh ? 'high' : 'low'}`}>
+      {temp}°{unit}
+    </span>
+  );
+};
+
 const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
-  const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
-    return (
-      <span className={`temperature ${isHigh ? 'high' : 'low'}`}>
-        {temp}°{unit}
-      </span>
-    );
-  };
-
-  const formatPrecipitation = (prob: number | null) => {
-    if (prob === null || prob === undefined) return 'N/A';
-    return (
-      <div className="precipitation">
-        <span>{prob}%</span>
-        <div className="precipitation-bar">
-          <div 
-            className="precipitation-fill" 
-            style={{ width: `${prob}%` }}
-          />
-        </div>
-      </div>
-    );
-  };
-
   const renderForecastPeriods = () => {
     const periods = data.properties.periods.slice(0, 14); // Show next 7 days (14 periods)
     
@@ -63,46 +93,36 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
         Daily Forecast
       </h2>
       
-      <table className="forecast-table">
-        <thead>
-          <tr>
-            <th>Period</th>
-            <th>Temperature</th>
-            <th>Conditions</th>
-            <th>Precipitation</th>
-            <th>Wind</th>
-          </tr>
-        </thead>
-        <tbody>
+      <div className="forecast-tiles-container">
+        <div className="forecast-tiles-row">
           {forecastPeriods.map((period, index) => (
-            <tr key={`${period.startTime}-${index}`}>
-              <td>
-                <div className="day-name">
-                  {period.displayName}
-                </div>
-              </td>
-              <td>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                  {formatTemperature(period.temperature, period.temperatureUnit, period.isDaytime)}
-                </div>
-              </td>
-              <td>
-                <div style={{ fontSize: '0.9rem' }}>
-                  {period.shortForecast}
-                </div>
-              </td>
-              <td>
-                {formatPrecipitation(period.precipitation)}
-              </td>
-              <td>
-                <div style={{ fontSize: '0.9rem' }}>
-                  {period.windSpeed} {period.windDirection}
-                </div>
-              </td>
-            </tr>
+            <div key={`${period.startTime}-${index}`} className="forecast-tile">
+              <div className="forecast-tile-period">
+                {period.displayName}
+              </div>
+              
+              <div className="forecast-tile-icon">
+                {getWeatherEmoji(period.shortForecast)}
+              </div>
+              
+              <div className="forecast-tile-temperature">
+                {formatTemperature(period.temperature, period.temperatureUnit, period.isDaytime)}
+              </div>
+              
+              <div className="forecast-tile-precipitation">
+                {period.precipitation !== null && period.precipitation !== undefined 
+                  ? `Precip. chance: ${period.precipitation}%`
+                  : 'No precipitation data'
+                }
+              </div>
+              
+              <div className="forecast-tile-wind">
+                Wind {period.windSpeed} {period.windDirection}
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
+        </div>
+      </div>
       
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
         <strong>Note:</strong> Forecast data provided by the National Weather Service. Showing separate daytime and nighttime periods for detailed planning.
