@@ -73,7 +73,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
     });
   };
 
-  const formatTooltip = (value: any, name: string, props: any) => {
+  const formatTooltip = (value: number | null, name: string, props: { payload: { temperatureUnit: string } }) => {
     if (name === 'temperature') {
       return [`${value}°${props.payload.temperatureUnit}`, 'Temperature'];
     }
@@ -86,7 +86,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
     return [value, name];
   };
 
-  const formatLabel = (label: string, payload: any[]) => {
+  const formatLabel = (label: string, payload: Array<{ payload: { fullTime: string } }>) => {
     if (payload && payload.length > 0) {
       return payload[0].payload.fullTime;
     }

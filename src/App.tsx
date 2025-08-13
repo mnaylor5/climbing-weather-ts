@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import climbingAreasData from '../data/sample-climbing-areas.json';
 import { ClimbingAreaData, getWeatherForArea, ForecastResponse, HourlyForecastResponse } from './weatherData/weatherApi';
 import { mockHourlyData, mock12HourData } from './weatherData/mockData';
@@ -23,7 +23,7 @@ function App() {
 
   const areas = climbingAreasData as ClimbingAreaData;
 
-  const fetchWeatherData = async () => {
+  const fetchWeatherData = useCallback(async () => {
     if (!selectedAreas.length) return;
 
     setLoading(true);
@@ -32,42 +32,46 @@ function App() {
     try {
       const weatherResults: AreaWeatherData[] = [];
       
-      for (const areaKey of selectedAreas) {
+      // Use Promise.all for concurrent API calls instead of sequential
+      const weatherPromises = selectedAreas.map(async (areaKey) => {
         const area = areas[areaKey];
         if (area) {
           try {
             const data = await getWeatherForArea(area, forecastType);
-            weatherResults.push({
+            return {
               areaKey,
               areaName: area.name,
               data
-            });
-          } catch (err) {
-            console.warn(`API failed for ${area.name}, using mock data:`, err);
+            };
+          } catch {
             // Use mock data when API fails for this area
             const mockData = forecastType === 'hourly' ? mockHourlyData : mock12HourData;
-            weatherResults.push({
+            return {
               areaKey,
               areaName: area.name,
-              data: mockData as any
-            });
+              data: mockData as ForecastResponse | HourlyForecastResponse
+            };
           }
         }
-      }
+        return null;
+      });
+
+      const results = await Promise.all(weatherPromises);
+      weatherResults.push(...results.filter((result): result is AreaWeatherData => result !== null));
       
       setWeatherData(weatherResults);
       setError(null);
     } catch (err) {
-      console.error('Error fetching weather data:', err);
-      setError('Failed to fetch weather data');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch weather data';
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedAreas, forecastType, areas]);
 
   useEffect(() => {
     fetchWeatherData();
-  }, [selectedAreas, forecastType]);
+  }, [fetchWeatherData]);
 
   const renderVisualization = () => {
     if (loading) {

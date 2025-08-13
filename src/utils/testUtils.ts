@@ -50,7 +50,9 @@ export const createMockHourlyPeriod = (overrides = {}) => ({
   ...overrides,
 });
 
-export const createMockApiResponse = (periods: any[]) => ({
+import { ForecastPeriod, HourlyForecastData } from '../weatherData/weatherApi';
+
+export const createMockApiResponse = (periods: ForecastPeriod[] | HourlyForecastData[]) => ({
   properties: {
     periods,
   },
