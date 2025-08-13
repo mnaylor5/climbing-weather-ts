@@ -1,7 +1,11 @@
 import { ForecastResponse } from '../weatherData/weatherApi';
 
 interface ForecastTableProps {
-  data: ForecastResponse;
+  weatherData: Array<{
+    areaKey: string;
+    areaName: string;
+    data: ForecastResponse;
+  }>;
 }
 
 const getWeatherEmoji = (forecast: string): string => {
@@ -57,8 +61,8 @@ const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
-  const renderForecastPeriods = () => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ weatherData }) => {
+  const renderForecastPeriods = (data: ForecastResponse) => {
     const periods = data.properties.periods.slice(0, 14); // Show next 7 days (14 periods)
     
     return periods.map((period) => {
@@ -85,44 +89,50 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ data }) => {
     });
   };
 
-  const forecastPeriods = renderForecastPeriods();
-
   return (
     <div>
-      <h2 style={{ marginBottom: '20px', color: '#2d3748', fontSize: '1.5rem', fontWeight: '600' }}>
-        Daily Forecast
-      </h2>
-      
-      <div className="forecast-tiles-container">
-        <div className="forecast-tiles-row">
-          {forecastPeriods.map((period, index) => (
-            <div key={`${period.startTime}-${index}`} className="forecast-tile">
-              <div className="forecast-tile-period">
-                {period.displayName}
-              </div>
-              
-              <div className="forecast-tile-icon">
-                {getWeatherEmoji(period.shortForecast)}
-              </div>
-              
-              <div className="forecast-tile-temperature">
-                {formatTemperature(period.temperature, period.temperatureUnit, period.isDaytime)}
-              </div>
-              
-              <div className="forecast-tile-precipitation">
-                {period.precipitation !== null && period.precipitation !== undefined 
-                  ? `Precip. chance: ${period.precipitation}%`
-                  : 'No precipitation data'
-                }
-              </div>
-              
-              <div className="forecast-tile-wind">
-                Wind {period.windSpeed} {period.windDirection}
+      {weatherData.map((areaData, index) => {
+        const forecastPeriods = renderForecastPeriods(areaData.data);
+        
+        return (
+          <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '40px' : '0' }}>
+            <h2 style={{ marginBottom: '20px', color: '#2d3748', fontSize: '1.5rem', fontWeight: '600' }}>
+              Daily Forecast - {areaData.areaName}
+            </h2>
+            
+            <div className="forecast-tiles-container">
+              <div className="forecast-tiles-row">
+                {forecastPeriods.map((period, periodIndex) => (
+                  <div key={`${period.startTime}-${periodIndex}`} className="forecast-tile">
+                    <div className="forecast-tile-period">
+                      {period.displayName}
+                    </div>
+                    
+                    <div className="forecast-tile-icon">
+                      {getWeatherEmoji(period.shortForecast)}
+                    </div>
+                    
+                    <div className="forecast-tile-temperature">
+                      {formatTemperature(period.temperature, period.temperatureUnit, period.isDaytime)}
+                    </div>
+                    
+                    <div className="forecast-tile-precipitation">
+                      {period.precipitation !== null && period.precipitation !== undefined 
+                        ? `Precip. chance: ${period.precipitation}%`
+                        : 'No precipitation data'
+                      }
+                    </div>
+                    
+                    <div className="forecast-tile-wind">
+                      Wind {period.windSpeed} {period.windDirection}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
+        );
+      })}
       
       <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
         <strong>Note:</strong> Forecast data provided by the National Weather Service. Showing separate daytime and nighttime periods for detailed planning.

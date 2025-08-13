@@ -46,6 +46,15 @@ const createMockHourlyData = (numPeriods: number = 48): HourlyForecastResponse =
   };
 };
 
+// Helper function to create test data in the new format
+const createTestWeatherData = (data: HourlyForecastResponse, areaName = 'Test Area', areaKey = 'testarea') => {
+  return [{
+    areaKey,
+    areaName,
+    data
+  }];
+};
+
 describe('HourlyChart', () => {
   let mockData: HourlyForecastResponse;
 
@@ -54,9 +63,9 @@ describe('HourlyChart', () => {
   });
 
   it('renders the hourly chart with correct title', () => {
-    render(<HourlyChart data={mockData} />);
+    render(<HourlyChart weatherData={createTestWeatherData(mockData)} />);
     
-    expect(screen.getByText('48-Hour Weather Forecast')).toBeInTheDocument();
+    expect(screen.getByText('48-Hour Weather Forecast - Test Area')).toBeInTheDocument();
   });
 
   it('renders the chart components', () => {
