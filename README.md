@@ -50,12 +50,14 @@ Before you begin, ensure you have the following installed:
 | Script | Description |
 |--------|-------------|
 | `npm run dev` | Starts the development server with hot reload |
-| `npm run build` | Builds the app for production to `dist/` folder |
+| `npm run build` | Builds the app for production to `dist/` folder (includes linting) |
 | `npm run preview` | Preview the production build locally |
 | `npm test` | Run all unit tests |
 | `npm run test:watch` | Run tests in watch mode |
 | `npm run test:coverage` | Run tests with coverage report |
 | `npm run test:api` | Run API integration tests |
+| `npm run lint` | Run ESLint checks on source code |
+| `npm run lint:fix` | Automatically fix ESLint issues where possible |
 
 ## 🧪 Testing
 
@@ -111,6 +113,7 @@ This application integrates with the **National Weather Service API** to provide
 
 - **Frontend Framework**: [React 18](https://reactjs.org/) with TypeScript
 - **Build Tool**: [Vite](https://vitejs.dev/) for fast development and optimized builds
+- **Code Quality**: [ESLint](https://eslint.org/) with TypeScript and React rules for consistent code style
 - **Charts & Visualization**: [Recharts](https://recharts.org/) for interactive weather charts
 - **Styling**: CSS3 with CSS Variables for theming
 - **API**: [National Weather Service API](https://www.weather.gov/documentation/services-web-api) for real-time weather data
