@@ -4,34 +4,62 @@ import { ClimbingAreaData, getWeatherForArea, ForecastResponse, HourlyForecastRe
 import { mockHourlyData, mock12HourData } from './weatherData/mockData';
 import HourlyChart from './components/HourlyChart';
 import ForecastTable from './components/ForecastTable';
+import MultiSelect from './components/MultiSelect';
 
 type ForecastType = 'hourly' | '12hour';
 
+interface AreaWeatherData {
+  areaKey: string;
+  areaName: string;
+  data: ForecastResponse | HourlyForecastResponse;
+}
+
 function App() {
-  const [selectedArea, setSelectedArea] = useState<string>('redrocks');
+  const [selectedAreas, setSelectedAreas] = useState<string[]>(['stonefort', 'tensleep']);
   const [forecastType, setForecastType] = useState<ForecastType>('12hour');
-  const [weatherData, setWeatherData] = useState<ForecastResponse | HourlyForecastResponse | null>(null);
+  const [weatherData, setWeatherData] = useState<AreaWeatherData[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const areas = climbingAreasData as ClimbingAreaData;
 
   const fetchWeatherData = async () => {
-    if (!selectedArea) return;
+    if (!selectedAreas.length) return;
 
     setLoading(true);
     setError(null);
     
     try {
-      const area = areas[selectedArea];
-      const data = await getWeatherForArea(area, forecastType);
-      setWeatherData(data);
+      const weatherResults: AreaWeatherData[] = [];
+      
+      for (const areaKey of selectedAreas) {
+        const area = areas[areaKey];
+        if (area) {
+          try {
+            const data = await getWeatherForArea(area, forecastType);
+            weatherResults.push({
+              areaKey,
+              areaName: area.name,
+              data
+            });
+          } catch (err) {
+            console.warn(`API failed for ${area.name}, using mock data:`, err);
+            // Use mock data when API fails for this area
+            const mockData = forecastType === 'hourly' ? mockHourlyData : mock12HourData;
+            weatherResults.push({
+              areaKey,
+              areaName: area.name,
+              data: mockData as any
+            });
+          }
+        }
+      }
+      
+      setWeatherData(weatherResults);
+      setError(null);
     } catch (err) {
-      console.warn('API failed, using mock data for development:', err);
-      // Use mock data when API fails (development mode)
-      const mockData = forecastType === 'hourly' ? mockHourlyData : mock12HourData;
-      setWeatherData(mockData as any);
-      setError(null); // Clear error when using mock data
+      console.error('Error fetching weather data:', err);
+      setError('Failed to fetch weather data');
     } finally {
       setLoading(false);
     }
@@ -39,7 +67,7 @@ function App() {
 
   useEffect(() => {
     fetchWeatherData();
-  }, [selectedArea, forecastType]);
+  }, [selectedAreas, forecastType]);
 
   const renderVisualization = () => {
     if (loading) {
@@ -50,14 +78,20 @@ function App() {
       return <div className="error">Error: {error}</div>;
     }
 
-    if (!weatherData) {
+    if (!weatherData.length) {
       return <div className="loading">No data available</div>;
     }
 
     if (forecastType === 'hourly') {
-      return <HourlyChart data={weatherData as HourlyForecastResponse} />;
+      return <HourlyChart weatherData={weatherData.map(item => ({
+        ...item,
+        data: item.data as HourlyForecastResponse
+      }))} />;
     } else {
-      return <ForecastTable data={weatherData as ForecastResponse} />;
+      return <ForecastTable weatherData={weatherData.map(item => ({
+        ...item,
+        data: item.data as ForecastResponse
+      }))} />;
     }
   };
 
@@ -70,19 +104,15 @@ function App() {
 
       <div className="controls">
         <div className="control-group">
-          <label htmlFor="area-select">Climbing Area</label>
-          <select
-            id="area-select"
-            className="select-input"
-            value={selectedArea}
-            onChange={(e) => setSelectedArea(e.target.value)}
-          >
-            {Object.entries(areas).map(([key, area]) => (
-              <option key={key} value={key}>
-                {area.name}
-              </option>
-            ))}
-          </select>
+          <label htmlFor="area-select">Climbing Areas</label>
+          <div style={{ position: 'relative' }}>
+            <MultiSelect
+              areas={areas}
+              selectedAreas={selectedAreas}
+              onChange={setSelectedAreas}
+              maxSelections={10}
+            />
+          </div>
         </div>
 
         <div className="control-group">
