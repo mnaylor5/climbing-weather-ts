@@ -117,7 +117,7 @@ const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
                 top: 20,
                 right: 30,
                 left: 20,
-                bottom: 60,
+                bottom: 5,
               }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
@@ -149,31 +149,32 @@ const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
                 type="monotone" 
                 dataKey="temperature" 
                 stroke="#2196f3" 
-                strokeWidth={3}
-                dot={{ fill: '#2196f3', strokeWidth: 2, r: 4 }}
-                activeDot={{ r: 6, stroke: '#2196f3', strokeWidth: 2, fill: 'white' }}
+                strokeWidth={2.5}
+                dot={false}
+                activeDot={{ r: 5, stroke: '#2196f3', strokeWidth: 2, fill: 'white' }}
               />
               <Line 
                 type="monotone" 
                 dataKey="humidity" 
                 stroke="#22c55e" 
-                strokeWidth={2}
-                dot={{ fill: '#22c55e', strokeWidth: 2, r: 3 }}
+                strokeWidth={2.5}
+                dot={false}
                 activeDot={{ r: 5, stroke: '#22c55e', strokeWidth: 2, fill: 'white' }}
               />
               <Line 
                 type="monotone" 
                 dataKey="precipitation" 
                 stroke="#f59e0b" 
-                strokeWidth={2}
-                dot={{ fill: '#f59e0b', strokeWidth: 2, r: 3 }}
+                strokeWidth={2.5}
+                dot={false}
                 activeDot={{ r: 5, stroke: '#f59e0b', strokeWidth: 2, fill: 'white' }}
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
         <div style={{ 
-          marginTop: '10px', 
+          marginTop: '5px', 
+          marginBottom: '60px',
           display: 'flex', 
           justifyContent: 'center', 
           gap: '20px', 
