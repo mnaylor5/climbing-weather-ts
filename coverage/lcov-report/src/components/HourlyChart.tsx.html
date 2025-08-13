@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.59% </span>
+                <span class="strong">76.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>36/47</span>
+                <span class='fraction'>39/51</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">76.08% </span>
+                <span class="strong">76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>35/46</span>
+                <span class='fraction'>38/50</span>
             </div>
         
             
@@ -310,9 +310,18 @@
 <a name='L245'></a><a href='#L245'>245</a>
 <a name='L246'></a><a href='#L246'>246</a>
 <a name='L247'></a><a href='#L247'>247</a>
-<a name='L248'></a><a href='#L248'>248</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L248'></a><a href='#L248'>248</a>
+<a name='L249'></a><a href='#L249'>249</a>
+<a name='L250'></a><a href='#L250'>250</a>
+<a name='L251'></a><a href='#L251'>251</a>
+<a name='L252'></a><a href='#L252'>252</a>
+<a name='L253'></a><a href='#L253'>253</a>
+<a name='L254'></a><a href='#L254'>254</a>
+<a name='L255'></a><a href='#L255'>255</a>
+<a name='L256'></a><a href='#L256'>256</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -388,17 +397,11 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -406,6 +409,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -528,7 +542,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -557,9 +571,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from 'react';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { useState, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
+import { memo } from 'react';
 &nbsp;
 interface HourlyChartProps {
   weatherData: Array&lt;{
@@ -569,11 +586,11 @@ interface HourlyChartProps {
   }&gt;;
 }
 &nbsp;
-const HourlyChart: React.FC&lt;HourlyChartProps&gt; = ({ weatherData }) =&gt; {
+const HourlyChart: React.FC&lt;HourlyChartProps&gt; = memo(({ weatherData }) =&gt; {
   const [startTimeOffset, setStartTimeOffset] = useState&lt;number&gt;(0);
 &nbsp;
-  // Get start time options (every 6 hours for the next 24 hours)
-  const getStartTimeOptions = () =&gt; {
+  // Get start time options (every 6 hours for the next 24 hours)  
+  const getStartTimeOptions = useCallback(() =&gt; {
     const options = [];
     const now = new Date();
     
@@ -609,10 +626,10 @@ const HourlyChart: React.FC&lt;HourlyChartProps&gt; = ({ weatherData }) =&gt; {
       });
     }
     return options;
-  };
+  }, []);
 &nbsp;
   // Process the data for each area's chart (take 48 hours starting from selected offset)
-  const processChartData = (data: HourlyForecastResponse) =&gt; {
+  const processChartData = useCallback((data: HourlyForecastResponse) =&gt; {
     return data.properties.periods.slice(startTimeOffset, startTimeOffset + 48).map((period) =&gt; {
       const date = new Date(period.startTime);
       return {
@@ -630,29 +647,34 @@ const HourlyChart: React.FC&lt;HourlyChartProps&gt; = ({ weatherData }) =&gt; {
         precipitation: period.probabilityOfPrecipitation?.value ?? null,
       };
     });
-  };
+  }, [startTimeOffset]);
 &nbsp;
-  const formatTooltip = <span class="fstat-no" title="function not covered" >(v</span>alue: any, name: string, props: any) =&gt; {
+  const formatTooltip = useCallback(<span class="fstat-no" title="function not covered" >(v</span>alue: unknown, name: string, props: any) =&gt; {
+    const numValue = <span class="cstat-no" title="statement not covered" >value as number | null;</span>
 <span class="cstat-no" title="statement not covered" >    if (name === 'temperature') {</span>
-<span class="cstat-no" title="statement not covered" >      return [`${value}°${props.payload.temperatureUnit}`, 'Temperature'];</span>
+<span class="cstat-no" title="statement not covered" >      return [`${numValue}°${props.payload.temperatureUnit}`, 'Temperature'];</span>
     }
 <span class="cstat-no" title="statement not covered" >    if (name === 'humidity') {</span>
-<span class="cstat-no" title="statement not covered" >      return [`${value}%`, 'Humidity'];</span>
+<span class="cstat-no" title="statement not covered" >      return [`${numValue}%`, 'Humidity'];</span>
     }
 <span class="cstat-no" title="statement not covered" >    if (name === 'precipitation') {</span>
-<span class="cstat-no" title="statement not covered" >      return [`${value}%`, 'Precipitation'];</span>
+<span class="cstat-no" title="statement not covered" >      return [`${numValue}%`, 'Precipitation'];</span>
     }
-<span class="cstat-no" title="statement not covered" >    return [value, name];</span>
-  };
+<span class="cstat-no" title="statement not covered" >    return [numValue, name];</span>
+  }, []);
 &nbsp;
-  const formatLabel = <span class="fstat-no" title="function not covered" >(l</span>abel: string, payload: any[]) =&gt; {
+  const formatLabel = useCallback(<span class="fstat-no" title="function not covered" >(l</span>abel: string, payload?: any[]) =&gt; {
 <span class="cstat-no" title="statement not covered" >    if (payload &amp;&amp; payload.length &gt; 0) {</span>
 <span class="cstat-no" title="statement not covered" >      return payload[0].payload.fullTime;</span>
     }
 <span class="cstat-no" title="statement not covered" >    return label;</span>
-  };
+  }, []);
 &nbsp;
   const startTimeOptions = getStartTimeOptions();
+&nbsp;
+  const handleStartTimeChange = useCallback(<span class="fstat-no" title="function not covered" >(e</span>: React.ChangeEvent&lt;HTMLSelectElement&gt;) =&gt; {
+<span class="cstat-no" title="statement not covered" >    setStartTimeOffset(Number(e.target.value));</span>
+  }, []);
 &nbsp;
   const renderChart = (areaData: { areaKey: string; areaName: string; data: HourlyForecastResponse }, index: number) =&gt; {
     const chartData = processChartData(areaData.data);
@@ -775,7 +797,7 @@ const HourlyChart: React.FC&lt;HourlyChartProps&gt; = ({ weatherData }) =&gt; {
           &lt;select
             id="start-time-select"
             value={startTimeOffset}
-            onChange={<span class="fstat-no" title="function not covered" >(e</span>) =&gt; <span class="cstat-no" title="statement not covered" >setStartTimeOffset(Number(e.target.value))}</span>
+            onChange={handleStartTimeChange}
             style={{
               padding: '8px 12px',
               borderRadius: '6px',
@@ -802,7 +824,9 @@ const HourlyChart: React.FC&lt;HourlyChartProps&gt; = ({ weatherData }) =&gt; {
       &lt;/div&gt;
     &lt;/div&gt;
   );
-};
+});
+&nbsp;
+HourlyChart.displayName = 'HourlyChart';
 &nbsp;
 export default HourlyChart;</pre></td></tr></table></pre>
 
@@ -811,7 +835,7 @@ export default HourlyChart;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-08-13T03:25:33.970Z
+                at 2025-08-13T15:27:29.484Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

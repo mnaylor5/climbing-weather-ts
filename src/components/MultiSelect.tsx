@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import { ClimbingAreaData } from '../weatherData/weatherApi';
 
 interface MultiSelectProps {
@@ -8,7 +8,7 @@ interface MultiSelectProps {
   maxSelections?: number;
 }
 
-const MultiSelect: React.FC<MultiSelectProps> = ({ 
+const MultiSelect: React.FC<MultiSelectProps> = memo(({ 
   areas, 
   selectedAreas, 
   onChange, 
@@ -32,11 +32,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     };
   }, []);
 
-  const filteredAreas = Object.entries(areas).filter(([, area]) =>
-    area.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAreas = useMemo(() => 
+    Object.entries(areas).filter(([, area]) =>
+      area.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ), [areas, searchTerm]
   );
 
-  const handleAreaToggle = (areaKey: string) => {
+  const handleAreaToggle = useCallback((areaKey: string) => {
     const isSelected = selectedAreas.includes(areaKey);
     let newSelection: string[];
 
@@ -50,14 +52,14 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
     }
 
     onChange(newSelection);
-  };
+  }, [selectedAreas, maxSelections, onChange]);
 
-  const removeArea = (areaKey: string) => {
+  const removeArea = useCallback((areaKey: string) => {
     const newSelection = selectedAreas.filter(key => key !== areaKey);
     onChange(newSelection);
-  };
+  }, [selectedAreas, onChange]);
 
-  const getDisplayText = () => {
+  const getDisplayText = useCallback(() => {
     if (selectedAreas.length === 0) {
       return 'Select climbing areas...';
     }
@@ -65,13 +67,21 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       return areas[selectedAreas[0]]?.name || 'Unknown area';
     }
     return `${selectedAreas.length} areas selected`;
-  };
+  }, [selectedAreas, areas]);
+
+  const handleToggleOpen = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  }, []);
 
   return (
     <div className="multi-select" ref={containerRef}>
       <div
         className="multi-select-trigger"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggleOpen}
         style={{
           padding: '8px 12px',
           border: '1px solid #d1d5db',
@@ -160,7 +170,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
               type="text"
               placeholder="Search areas..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
               style={{
                 width: '100%',
                 padding: '6px 8px',
@@ -233,6 +243,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
       )}
     </div>
   );
-};
+});
+
+MultiSelect.displayName = 'MultiSelect';
 
 export default MultiSelect;

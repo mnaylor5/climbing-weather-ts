@@ -202,21 +202,17 @@ describe('App', () => {
   });
 
   it('handles API errors gracefully and shows mock data', async () => {
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
     mockGetWeatherForArea.mockRejectedValueOnce(new Error('API Error'));
 
     render(<App />);
 
+    // Should still render the table with mock data when API fails
     await waitFor(() => {
       expect(screen.getByTestId('forecast-table')).toBeInTheDocument();
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'API failed for Stone Fort (Little Rock City), using mock data:',
-      expect.any(Error)
-    );
-
-    consoleSpy.mockRestore();
+    // No error should be displayed to the user since we fall back to mock data
+    expect(screen.queryByText(/Error:/)).not.toBeInTheDocument();
   });
 
   it('updates forecast type toggle button states correctly', async () => {

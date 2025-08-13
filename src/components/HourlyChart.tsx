@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
+import { memo } from 'react';
 
 interface HourlyChartProps {
   weatherData: Array<{
@@ -10,11 +11,11 @@ interface HourlyChartProps {
   }>;
 }
 
-const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
+const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
   const [startTimeOffset, setStartTimeOffset] = useState<number>(0);
 
-  // Get start time options (every 6 hours for the next 24 hours)
-  const getStartTimeOptions = () => {
+  // Get start time options (every 6 hours for the next 24 hours)  
+  const getStartTimeOptions = useCallback(() => {
     const options = [];
     const now = new Date();
     
@@ -50,10 +51,10 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
       });
     }
     return options;
-  };
+  }, []);
 
   // Process the data for each area's chart (take 48 hours starting from selected offset)
-  const processChartData = (data: HourlyForecastResponse) => {
+  const processChartData = useCallback((data: HourlyForecastResponse) => {
     return data.properties.periods.slice(startTimeOffset, startTimeOffset + 48).map((period) => {
       const date = new Date(period.startTime);
       return {
@@ -71,29 +72,34 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
         precipitation: period.probabilityOfPrecipitation?.value ?? null,
       };
     });
-  };
+  }, [startTimeOffset]);
 
-  const formatTooltip = (value: any, name: string, props: any) => {
+  const formatTooltip = useCallback((value: unknown, name: string, props: any) => {
+    const numValue = value as number | null;
     if (name === 'temperature') {
-      return [`${value}°${props.payload.temperatureUnit}`, 'Temperature'];
+      return [`${numValue}°${props.payload.temperatureUnit}`, 'Temperature'];
     }
     if (name === 'humidity') {
-      return [`${value}%`, 'Humidity'];
+      return [`${numValue}%`, 'Humidity'];
     }
     if (name === 'precipitation') {
-      return [`${value}%`, 'Precipitation'];
+      return [`${numValue}%`, 'Precipitation'];
     }
-    return [value, name];
-  };
+    return [numValue, name];
+  }, []);
 
-  const formatLabel = (label: string, payload: any[]) => {
+  const formatLabel = useCallback((label: string, payload?: any[]) => {
     if (payload && payload.length > 0) {
       return payload[0].payload.fullTime;
     }
     return label;
-  };
+  }, []);
 
   const startTimeOptions = getStartTimeOptions();
+
+  const handleStartTimeChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStartTimeOffset(Number(e.target.value));
+  }, []);
 
   const renderChart = (areaData: { areaKey: string; areaName: string; data: HourlyForecastResponse }, index: number) => {
     const chartData = processChartData(areaData.data);
@@ -216,7 +222,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
           <select
             id="start-time-select"
             value={startTimeOffset}
-            onChange={(e) => setStartTimeOffset(Number(e.target.value))}
+            onChange={handleStartTimeChange}
             style={{
               padding: '8px 12px',
               borderRadius: '6px',
@@ -243,6 +249,8 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
       </div>
     </div>
   );
-};
+});
+
+HourlyChart.displayName = 'HourlyChart';
 
 export default HourlyChart;
