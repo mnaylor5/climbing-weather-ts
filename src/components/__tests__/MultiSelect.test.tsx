@@ -190,7 +190,7 @@ describe('MultiSelect', () => {
       
       // Find and click the Red Rock Canyon option in the dropdown (checkbox container)
       const checkboxes = screen.getAllByRole('checkbox');
-      const redRockCheckbox = checkboxes.find(cb => cb.checked);
+      const redRockCheckbox = checkboxes.find(cb => (cb as HTMLInputElement).checked);
       
       if (redRockCheckbox && redRockCheckbox.parentElement) {
         fireEvent.click(redRockCheckbox.parentElement);

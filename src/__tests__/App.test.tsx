@@ -1,5 +1,4 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { useState } from 'react';
 import App from '../App';
 import * as weatherApi from '../weatherData/weatherApi';
 import { mockHourlyData, mock12HourData } from '../weatherData/mockData';
@@ -269,11 +268,10 @@ describe('App', () => {
   it('shows appropriate message when no areas are selected', async () => {
     // Create a test version of App with no default selections
     const TestApp = () => {
-      const [selectedAreas, setSelectedAreas] = useState<string[]>([]);
-      const [forecastType, setForecastType] = useState<'hourly' | '12hour'>('12hour');
-      const [weatherData, setWeatherData] = useState<any[]>([]);
-      const [loading, setLoading] = useState(false);
-      const [error, setError] = useState<string | null>(null);
+      const selectedAreas: string[] = [];
+      const weatherData: any[] = [];
+      const loading = false;
+      const error: string | null = null;
 
       const renderVisualization = () => {
         if (loading) {
@@ -284,7 +282,7 @@ describe('App', () => {
           return <div className="error">Error: {error}</div>;
         }
 
-        if (!weatherData.length) {
+        if (!selectedAreas.length || !weatherData.length) {
           return <div className="loading">No data available</div>;
         }
 
