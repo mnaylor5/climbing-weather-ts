@@ -134,7 +134,6 @@ Contributions are welcome! Here's how you can help:
 - Maintain responsive design principles
 - Add tests for new API integrations
 - Update documentation for new features
-- Follow ESLint rules for code consistency (see [ESLint docs](docs/eslint.md))
 
 ## 📝 License
 
