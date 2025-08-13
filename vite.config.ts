@@ -9,5 +9,14 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor dependencies into separate chunks
+          'react-vendor': ['react', 'react-dom'],
+          'chart-vendor': ['recharts'],
+        },
+      },
+    },
   },
 })
