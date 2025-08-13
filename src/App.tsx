@@ -1,79 +1,23 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
 import climbingAreasData from '../data/sample-climbing-areas.json';
-import { ClimbingAreaData, getWeatherForArea, ForecastResponse, HourlyForecastResponse } from './weatherData/weatherApi';
-import { mockHourlyData, mock12HourData } from './weatherData/mockData';
+import { ClimbingAreaData, ForecastResponse, HourlyForecastResponse } from './weatherData/weatherApi';
+import { useWeatherData, ForecastType } from './hooks/useWeatherData';
 import MultiSelect from './components/MultiSelect';
 
 // Lazy load the chart components to reduce initial bundle size
 const HourlyChart = lazy(() => import('./components/HourlyChart'));
 const ForecastTable = lazy(() => import('./components/ForecastTable'));
 
-type ForecastType = 'hourly' | '12hour';
-
-interface AreaWeatherData {
-  areaKey: string;
-  areaName: string;
-  data: ForecastResponse | HourlyForecastResponse;
-}
-
 function App() {
   const [selectedAreas, setSelectedAreas] = useState<string[]>(['stonefort', 'tensleep']);
   const [forecastType, setForecastType] = useState<ForecastType>('12hour');
-  const [weatherData, setWeatherData] = useState<AreaWeatherData[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
+  
+  const { weatherData, loading, error, fetchWeatherData } = useWeatherData();
   const areas = climbingAreasData as ClimbingAreaData;
 
-  const fetchWeatherData = useCallback(async () => {
-    if (!selectedAreas.length) return;
-
-    setLoading(true);
-    setError(null);
-    
-    try {
-      const weatherResults: AreaWeatherData[] = [];
-      
-      // Use Promise.all for concurrent API calls instead of sequential
-      const weatherPromises = selectedAreas.map(async (areaKey) => {
-        const area = areas[areaKey];
-        if (area) {
-          try {
-            const data = await getWeatherForArea(area, forecastType);
-            return {
-              areaKey,
-              areaName: area.name,
-              data
-            };
-          } catch {
-            // Use mock data when API fails for this area
-            const mockData = forecastType === 'hourly' ? mockHourlyData : mock12HourData;
-            return {
-              areaKey,
-              areaName: area.name,
-              data: mockData as ForecastResponse | HourlyForecastResponse
-            };
-          }
-        }
-        return null;
-      });
-
-      const results = await Promise.all(weatherPromises);
-      weatherResults.push(...results.filter((result): result is AreaWeatherData => result !== null));
-      
-      setWeatherData(weatherResults);
-      setError(null);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch weather data';
-      setError(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  }, [selectedAreas, forecastType, areas]);
-
   useEffect(() => {
-    fetchWeatherData();
-  }, [fetchWeatherData]);
+    fetchWeatherData(selectedAreas, forecastType, areas);
+  }, [selectedAreas, forecastType, areas, fetchWeatherData]);
 
   const handleForecastTypeChange = useCallback((type: ForecastType) => {
     setForecastType(type);
