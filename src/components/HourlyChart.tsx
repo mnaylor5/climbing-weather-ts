@@ -107,7 +107,7 @@ const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
     return (
       <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '40px' : '0' }}>
         <h2 style={{ color: '#2d3748', fontSize: '1.5rem', fontWeight: '600', marginBottom: '20px' }}>
-          48-Hour Weather Forecast - {areaData.areaName}
+          {areaData.areaName}: Hourly Forecast
         </h2>
         <div className="chart-container">
           <ResponsiveContainer width="100%" height="100%">
@@ -133,7 +133,6 @@ const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
               <YAxis 
                 stroke="#4a5568"
                 fontSize={12}
-                label={{ value: 'Value', angle: -90, position: 'insideLeft' }}
               />
               <Tooltip 
                 formatter={formatTooltip}

@@ -65,7 +65,7 @@ describe('HourlyChart', () => {
   it('renders the hourly chart with correct title', () => {
     render(<HourlyChart weatherData={createTestWeatherData(mockData)} />);
     
-    expect(screen.getByText('48-Hour Weather Forecast - Test Area')).toBeInTheDocument();
+    expect(screen.getByText('Test Area: Hourly Forecast')).toBeInTheDocument();
   });
 
   it('renders the chart components', () => {
@@ -101,7 +101,7 @@ describe('HourlyChart', () => {
     
     render(<HourlyChart weatherData={weatherData} />);
     
-    expect(screen.getByText('48-Hour Weather Forecast - Area 1')).toBeInTheDocument();
-    expect(screen.getByText('48-Hour Weather Forecast - Area 2')).toBeInTheDocument();
+    expect(screen.getByText('Area 1: Hourly Forecast')).toBeInTheDocument();
+    expect(screen.getByText('Area 2: Hourly Forecast')).toBeInTheDocument();
   });
 });
