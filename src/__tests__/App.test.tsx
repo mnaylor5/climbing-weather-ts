@@ -46,8 +46,8 @@ describe('App', () => {
   it('renders the app header correctly', () => {
     render(<App />);
     
-    expect(screen.getByText('Climbing Weather')).toBeInTheDocument();
-    expect(screen.getByText('Weather forecasts for premier climbing destinations')).toBeInTheDocument();
+    expect(screen.getByText('Conditions Report')).toBeInTheDocument();
+    expect(screen.getByText('Weather forecasts for your favorite climbing areas')).toBeInTheDocument();
   });
 
   it('renders climbing area selector with default selection', () => {
