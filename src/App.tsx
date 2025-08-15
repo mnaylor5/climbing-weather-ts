@@ -60,8 +60,8 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>Climbing Weather</h1>
-        <p>Weather forecasts for premier climbing destinations</p>
+        <h1>Conditions Report</h1>
+        <p>Weather forecasts for your favorite climbing areas</p>
       </header>
 
       <div className="controls">
