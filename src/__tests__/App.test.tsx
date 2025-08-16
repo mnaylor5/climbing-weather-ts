@@ -50,6 +50,12 @@ describe('App', () => {
     expect(screen.getByText('Weather forecasts for your favorite climbing areas')).toBeInTheDocument();
   });
 
+  it('renders the informational note', () => {
+      render(<App />);
+      
+      expect(screen.getByText(/Forecast data provided by the National Weather Service/)).toBeInTheDocument();
+    });
+
   it('renders GitHub link in footer with correct attributes', () => {
     render(<App />);
     

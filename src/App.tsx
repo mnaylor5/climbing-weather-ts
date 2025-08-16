@@ -108,6 +108,9 @@ function App() {
       </div>
 
       <footer className="footer">
+        <div style={{ padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
+          <strong>Note:</strong> Forecast data provided by the National Weather Service. See their <a href="https://www.weather.gov/documentation/services-web-api" target="_blank" rel="noopener noreferrer">API documentation</a> for more details.
+        </div>
         <a 
           href="https://github.com/mnaylor5/climbing-weather-ts" 
           target="_blank" 

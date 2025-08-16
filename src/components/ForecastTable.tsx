@@ -135,9 +135,6 @@ const ForecastTable: React.FC<ForecastTableProps> = memo(({ weatherData }) => {
         );
       })}
       
-      <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
-        <strong>Note:</strong> Forecast data provided by the National Weather Service. Showing separate daytime and nighttime periods for detailed planning.
-      </div>
     </div>
   );
 });
