@@ -1,4 +1,4 @@
-# 🧗 Climbing Weather App
+# 🧗 Conditions Report: A Climbing Weather App
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=61DAFB)](https://reactjs.org/)
