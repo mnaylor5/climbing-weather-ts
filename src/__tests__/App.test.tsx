@@ -70,7 +70,7 @@ describe('App', () => {
     // Check that the GitHub icon image is present within the link
     const githubIcon = githubLink.querySelector('img');
     expect(githubIcon).toBeInTheDocument();
-    expect(githubIcon).toHaveAttribute('src', './img/github-mark.svg');
+    expect(githubIcon).toHaveAttribute('src', '/github-mark.svg');
     expect(githubIcon).toHaveAttribute('alt', 'GitHub logo');
     expect(githubIcon).toHaveAttribute('width', '25');
     expect(githubIcon).toHaveAttribute('height', '25');
