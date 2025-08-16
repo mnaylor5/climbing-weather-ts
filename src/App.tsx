@@ -61,7 +61,7 @@ function App() {
     <div className="app">
       <header className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="/img/logo.jpg" alt="Logo" style={{ width: '48px', height: '48px', borderRadius: '8px' }} />
+          <img src="/img/logo2.png" alt="Logo" style={{ width: '56px', height: '48px', borderRadius: '8px' }} />
           <div>
             <h1>Conditions Report</h1>
             <p>Weather forecasts for your favorite climbing areas</p>
