@@ -98,7 +98,9 @@ describe('Weather API Functions', () => {
 
       const result = await get12HourForecast(mockLocationData);
 
-      expect(fetch).toHaveBeenCalledWith(mockLocationData.properties.forecast);
+      expect(fetch).toHaveBeenCalledWith(mockLocationData.properties.forecast, {
+        cache: 'no-cache'
+      });
       expect(result).toEqual(mockForecastResponse);
     });
 
@@ -155,7 +157,9 @@ describe('Weather API Functions', () => {
 
       const result = await getHourlyForecast(mockLocationData);
 
-      expect(fetch).toHaveBeenCalledWith(mockLocationData.properties.forecastHourly);
+      expect(fetch).toHaveBeenCalledWith(mockLocationData.properties.forecastHourly, {
+        cache: 'no-cache'
+      });
       expect(result).toEqual(mockHourlyResponse);
     });
 
@@ -224,7 +228,9 @@ describe('Weather API Functions', () => {
 
       expect(fetch).toHaveBeenCalledTimes(2);
       expect(fetch).toHaveBeenNthCalledWith(1, 'https://api.weather.gov/points/36.1315,-115.4266');
-      expect(fetch).toHaveBeenNthCalledWith(2, mockLocationResponse.properties.forecast);
+      expect(fetch).toHaveBeenNthCalledWith(2, mockLocationResponse.properties.forecast, {
+        cache: 'no-cache'
+      });
       expect(result).toEqual(mockForecastResponse);
     });
 
@@ -268,7 +274,9 @@ describe('Weather API Functions', () => {
 
       expect(fetch).toHaveBeenCalledTimes(2);
       expect(fetch).toHaveBeenNthCalledWith(1, 'https://api.weather.gov/points/36.1315,-115.4266');
-      expect(fetch).toHaveBeenNthCalledWith(2, mockLocationResponse.properties.forecastHourly);
+      expect(fetch).toHaveBeenNthCalledWith(2, mockLocationResponse.properties.forecastHourly, {
+        cache: 'no-cache'
+      });
       expect(result).toEqual(mockHourlyResponse);
     });
 
