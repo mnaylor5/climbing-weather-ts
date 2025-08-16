@@ -132,12 +132,6 @@ describe('ForecastTable', () => {
     expect(temperatures[1]).toHaveClass('low');  // Night temperature
   });
 
-  it('renders the informational note', () => {
-    render(<ForecastTable weatherData={createTestWeatherData(mockForecastData)} />);
-    
-    expect(screen.getByText(/Forecast data provided by the National Weather Service/)).toBeInTheDocument();
-  });
-
   it('limits display to 14 periods', () => {
     const manyPeriods: ForecastResponse = {
       properties: {

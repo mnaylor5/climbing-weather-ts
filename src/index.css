@@ -154,6 +154,40 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+.footer {
+  padding: 20px 30px;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(245, 247, 250, 0.5);
+}
+
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #4a5568;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.github-link:hover {
+  color: #2d3748;
+  background: rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.github-icon {
+  transition: transform 0.2s ease;
+}
+
+.github-link:hover .github-icon {
+  transform: scale(1.1);
+}
+
 .chart-container {
   width: 100%;
   height: 400px;
@@ -327,6 +361,15 @@ body {
   
   .content {
     padding: 20px;
+  }
+  
+  .footer {
+    padding: 15px 20px;
+  }
+  
+  .github-link {
+    font-size: 0.85rem;
+    padding: 6px 12px;
   }
   
   .visualization-container {

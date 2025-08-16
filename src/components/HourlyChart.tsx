@@ -243,10 +243,6 @@ const HourlyChart: React.FC<HourlyChartProps> = memo(({ weatherData }) => {
       </div>
       
       {weatherData.map((areaData, index) => renderChart(areaData, index))}
-      
-      <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8fafc', borderRadius: '8px', fontSize: '0.9rem', color: '#4a5568' }}>
-        <strong>Note:</strong> Showing 48 hours of temperature, humidity, and precipitation data starting from the selected time. Hover over points for detailed information.
-      </div>
     </div>
   );
 });

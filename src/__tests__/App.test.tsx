@@ -50,6 +50,32 @@ describe('App', () => {
     expect(screen.getByText('Weather forecasts for your favorite climbing areas')).toBeInTheDocument();
   });
 
+  it('renders the informational note', () => {
+      render(<App />);
+      
+      expect(screen.getByText(/Forecast data provided by the National Weather Service/)).toBeInTheDocument();
+    });
+
+  it('renders GitHub link in footer with correct attributes', () => {
+    render(<App />);
+    
+    const githubLink = screen.getByRole('link', { name: /view on github/i });
+    
+    expect(githubLink).toBeInTheDocument();
+    expect(githubLink).toHaveAttribute('href', 'https://github.com/mnaylor5/climbing-weather-ts');
+    expect(githubLink).toHaveAttribute('target', '_blank');
+    expect(githubLink).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(githubLink).toHaveClass('github-link');
+    
+    // Check that the GitHub icon image is present within the link
+    const githubIcon = githubLink.querySelector('img');
+    expect(githubIcon).toBeInTheDocument();
+    expect(githubIcon).toHaveAttribute('src', './img/github-mark.svg');
+    expect(githubIcon).toHaveAttribute('alt', 'GitHub logo');
+    expect(githubIcon).toHaveAttribute('width', '25');
+    expect(githubIcon).toHaveAttribute('height', '25');
+  });
+
   it('renders climbing area selector with default selection', () => {
     render(<App />);
     
