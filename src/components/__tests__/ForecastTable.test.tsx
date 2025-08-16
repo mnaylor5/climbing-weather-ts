@@ -66,7 +66,7 @@ describe('ForecastTable', () => {
   it('renders the forecast table with correct title', () => {
     render(<ForecastTable weatherData={createTestWeatherData(mockForecastData)} />);
     
-    expect(screen.getByText('Daily Forecast - Test Area')).toBeInTheDocument();
+    expect(screen.getByText('Test Area')).toBeInTheDocument();
   });
 
   it('renders tile layout instead of table headers', () => {

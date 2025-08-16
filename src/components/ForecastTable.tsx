@@ -97,7 +97,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ weatherData }) => {
         return (
           <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '40px' : '0' }}>
             <h2 style={{ marginBottom: '20px', color: '#2d3748', fontSize: '1.5rem', fontWeight: '600' }}>
-              Daily Forecast - {areaData.areaName}
+              {areaData.areaName}
             </h2>
             
             <div className="forecast-tiles-container">
