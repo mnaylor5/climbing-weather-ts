@@ -1,5 +1,4 @@
 import { ForecastResponse } from '../weatherData/weatherApi';
-import { memo, useCallback } from 'react';
 
 interface ForecastTableProps {
   weatherData: Array<{
@@ -62,8 +61,8 @@ const formatTemperature = (temp: number, unit: string, isHigh: boolean) => {
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = memo(({ weatherData }) => {
-  const renderForecastPeriods = useCallback((data: ForecastResponse) => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ weatherData }) => {
+  const renderForecastPeriods = (data: ForecastResponse) => {
     const periods = data.properties.periods.slice(0, 14); // Show next 7 days (14 periods)
     
     return periods.map((period) => {
@@ -88,7 +87,7 @@ const ForecastTable: React.FC<ForecastTableProps> = memo(({ weatherData }) => {
         precipitation: period.probabilityOfPrecipitation?.value || null,
       };
     });
-  }, []);
+  };
 
   return (
     <div>
@@ -137,8 +136,6 @@ const ForecastTable: React.FC<ForecastTableProps> = memo(({ weatherData }) => {
       
     </div>
   );
-});
-
-ForecastTable.displayName = 'ForecastTable';
+};
 
 export default ForecastTable;
