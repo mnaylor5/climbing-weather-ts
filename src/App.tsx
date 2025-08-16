@@ -117,7 +117,7 @@ function App() {
           rel="noopener noreferrer"
           className="github-link"
         >
-          <img src={'./img/github-mark.svg'} alt="GitHub logo" width="25" height="25" />
+          <img src="./img/github-mark.svg" alt="GitHub logo" width="25" height="25" />
           View on GitHub
         </a>
       </footer>
