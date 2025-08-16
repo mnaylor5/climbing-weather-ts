@@ -60,8 +60,13 @@ function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>Conditions Report</h1>
-        <p>Weather forecasts for your favorite climbing areas</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <img src="/img/logo2.png" alt="Logo" style={{ width: '56px', height: '48px', borderRadius: '8px' }} />
+          <div>
+            <h1>Conditions Report</h1>
+            <p>Weather forecasts for your favorite climbing areas</p>
+          </div>
+        </div>
       </header>
 
       <div className="controls">
