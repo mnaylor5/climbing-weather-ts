@@ -61,7 +61,7 @@ function App() {
     <div className="app">
       <header className="header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <img src="/img/logo2.png" alt="Logo" style={{ width: '56px', height: '48px', borderRadius: '8px' }} />
+          <img src="/logo2.png" alt="Logo" style={{ width: '56px', height: '48px', borderRadius: '8px' }} />
           <div>
             <h1>Conditions Report</h1>
             <p>Weather forecasts for your favorite climbing areas</p>
@@ -117,7 +117,7 @@ function App() {
           rel="noopener noreferrer"
           className="github-link"
         >
-          <img src="./img/github-mark.svg" alt="GitHub logo" width="25" height="25" className="github-icon" />
+          <img src="/github-mark.svg" alt="GitHub logo" width="25" height="25" className="github-icon" />
           View on GitHub
         </a>
       </footer>
