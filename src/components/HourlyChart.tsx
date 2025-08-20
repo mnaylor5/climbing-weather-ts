@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
 
 interface HourlyChartProps {
@@ -145,7 +145,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
             <LineChart
               data={chartData}
               margin={{
-                top: 20,
+                top: 5,
                 right: 30,
                 left: 20,
                 bottom: 5,
@@ -156,8 +156,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 dataKey="time" 
                 stroke="#4a5568"
                 fontSize={12}
-                angle={-45}
-                textAnchor="end"
+                angle={0}
                 height={80}
                 interval={getResponsiveInterval()}
               />
@@ -175,9 +174,11 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}
               />
+              <Legend/>
               <Line 
                 type="monotone" 
                 dataKey="temperature" 
+                name="Temperature"
                 stroke="#2196f3" 
                 strokeWidth={2.5}
                 dot={false}
@@ -186,6 +187,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
               <Line 
                 type="monotone" 
                 dataKey="humidity" 
+                name="Humidity (%)"
                 stroke="#22c55e" 
                 strokeWidth={2.5}
                 dot={false}
@@ -194,6 +196,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
               <Line 
                 type="monotone" 
                 dataKey="precipitation" 
+                name="Precipitation (%)"
                 stroke="#f59e0b" 
                 strokeWidth={2.5}
                 dot={false}
@@ -202,12 +205,12 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <div style={{ 
-          marginTop: '5px', 
-          marginBottom: '60px',
+        {/* <div style={{ 
+          marginTop: '0px', 
+          marginBottom: '10px',
           display: 'flex', 
           justifyContent: 'center', 
-          gap: '20px', 
+          gap: '10px', 
           fontSize: '0.9rem', 
           color: '#4a5568' 
         }}>
@@ -238,7 +241,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
             }}></div>
             Precipitation (%)
           </div>
-        </div>
+        </div> */}
       </div>
     );
   };
