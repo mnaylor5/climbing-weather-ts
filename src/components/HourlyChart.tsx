@@ -127,7 +127,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 angle={-45}
                 textAnchor="end"
                 height={80}
-                interval={2}
+                interval={11}
               />
               <YAxis 
                 stroke="#4a5568"
