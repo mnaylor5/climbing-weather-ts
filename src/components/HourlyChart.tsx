@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
 
@@ -12,6 +12,38 @@ interface HourlyChartProps {
 
 const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
   const [startTimeOffset, setStartTimeOffset] = useState<number>(0);
+
+  // Custom hook to get window width
+  const useWindowWidth = () => {
+    const [windowWidth, setWindowWidth] = useState<number>(
+      typeof window !== 'undefined' ? window.innerWidth : 1200
+    );
+
+    useEffect(() => {
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowWidth;
+  };
+
+  const windowWidth = useWindowWidth();
+
+  // Calculate responsive interval based on screen width
+  const getResponsiveInterval = () => {
+    if (windowWidth < 480) {
+      return 17; // Very small screens (phones in portrait) - show fewer labels
+    } else if (windowWidth < 768) {
+      return 11; // Small screens (phones in landscape, small tablets)
+    } else if (windowWidth < 1024) {
+      return 7; // Medium screens (tablets)
+    } else if (windowWidth < 1440) {
+      return 5; // Desktop screens
+    } else {
+      return 2; // Large desktop screens - show more labels
+    }
+  };
 
   // Get start time options (every 6 hours for the next 24 hours)  
   const getStartTimeOptions = () => {
@@ -127,7 +159,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 angle={-45}
                 textAnchor="end"
                 height={80}
-                interval={11}
+                interval={getResponsiveInterval()}
               />
               <YAxis 
                 stroke="#4a5568"
