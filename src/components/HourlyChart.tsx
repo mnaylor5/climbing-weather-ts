@@ -30,6 +30,18 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
 
   const windowWidth = useWindowWidth();
 
+  // Calculate responsive chart height based on screen size and orientation
+  const getResponsiveHeight = () => {
+    if (windowWidth < 768) {
+      // Mobile devices - use a more constrained height
+      return window.innerHeight < window.innerWidth ? '200px' : '300px'; // landscape : portrait
+    } else if (windowWidth < 1024) {
+      return '300px'; // Tablets
+    } else {
+      return '375px'; // Desktop
+    }
+  };
+
   // Calculate responsive interval based on screen width
   const getResponsiveInterval = () => {
     if (windowWidth < 480) {
@@ -136,20 +148,14 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
     const chartData = processChartData(areaData.data);
     
     return (
-      <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '40px' : '0' }}>
+      <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '60px' : '10px' }}>
         <h2 style={{ color: '#2d3748', fontSize: '1.5rem', fontWeight: '600', marginBottom: '20px' }}>
           {areaData.areaName}: Hourly Forecast
         </h2>
-        <div className="chart-container">
+        <div className="chart-container" style={{ height: getResponsiveHeight() }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis 
@@ -157,7 +163,6 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 stroke="#4a5568"
                 fontSize={12}
                 angle={0}
-                height={40}
                 interval={getResponsiveInterval()}
               />
               <YAxis 
@@ -224,8 +229,8 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <label htmlFor="start-time-select" style={{ fontSize: '0.9rem', color: '#4a5568', fontWeight: '500' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <label htmlFor="start-time-select" style={{ fontSize: '0.9rem', color: '#4a5568', fontWeight: '500', flexShrink: 0 }}>
             Start Time:
           </label>
           <select
@@ -239,7 +244,11 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
               backgroundColor: 'white',
               fontSize: '0.9rem',
               color: '#374151',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              minWidth: '0',
+              maxWidth: '90%',
+              flexShrink: 1,
+              overflow: 'hidden'
             }}
           >
             {startTimeOptions.map((option) => (
