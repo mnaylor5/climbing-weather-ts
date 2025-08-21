@@ -104,6 +104,7 @@ body {
 }
 
 .toggle-button {
+  flex: 1;
   padding: 12px 20px;
   border: none;
   background: transparent;
@@ -113,6 +114,7 @@ body {
   cursor: pointer;
   transition: all 0.2s ease;
   color: #666;
+  text-align: center;
 }
 
 .toggle-button.active {

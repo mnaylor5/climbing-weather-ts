@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useState, useEffect } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
 
 interface HourlyChartProps {
@@ -10,8 +10,40 @@ interface HourlyChartProps {
   }>;
 }
 
+// Custom hook to get window width
+const useWindowWidth = () => {
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowWidth;
+};
+
 const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
   const [startTimeOffset, setStartTimeOffset] = useState<number>(0);
+
+  const windowWidth = useWindowWidth();
+
+  // Calculate responsive interval based on screen width
+  const getResponsiveInterval = () => {
+    if (windowWidth < 480) {
+      return 17; // Very small screens (phones in portrait) - show fewer labels
+    } else if (windowWidth < 768) {
+      return 11; // Small screens (phones in landscape, small tablets)
+    } else if (windowWidth < 1024) {
+      return 7; // Medium screens (tablets)
+    } else if (windowWidth < 1440) {
+      return 5; // Desktop screens
+    } else {
+      return 2; // Large desktop screens - show more labels
+    }
+  };
 
   // Get start time options (every 6 hours for the next 24 hours)  
   const getStartTimeOptions = () => {
@@ -113,7 +145,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
             <LineChart
               data={chartData}
               margin={{
-                top: 20,
+                top: 5,
                 right: 30,
                 left: 20,
                 bottom: 5,
@@ -124,10 +156,9 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 dataKey="time" 
                 stroke="#4a5568"
                 fontSize={12}
-                angle={-45}
-                textAnchor="end"
-                height={80}
-                interval={2}
+                angle={0}
+                height={40}
+                interval={getResponsiveInterval()}
               />
               <YAxis 
                 stroke="#4a5568"
@@ -143,6 +174,19 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}
               />
+              <Legend 
+                verticalAlign="bottom" 
+                height={12}
+                iconType="line"
+                wrapperStyle={{
+                  paddingTop: '0px',
+                  fontSize: '0.9rem',
+                  color: '#4a5568'
+                }}
+                formatter={(value) => (
+                  <span style={{ color: '#4a5568' }}>{value}</span>
+                )}
+              />
               <Line 
                 type="monotone" 
                 dataKey="temperature" 
@@ -150,6 +194,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#2196f3', strokeWidth: 2, fill: 'white' }}
+                name="Temperature (°F)"
               />
               <Line 
                 type="monotone" 
@@ -158,6 +203,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#22c55e', strokeWidth: 2, fill: 'white' }}
+                name="Humidity (%)"
               />
               <Line 
                 type="monotone" 
@@ -166,46 +212,10 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#f59e0b', strokeWidth: 2, fill: 'white' }}
+                name="Precipitation (%)"
               />
             </LineChart>
           </ResponsiveContainer>
-        </div>
-        <div style={{ 
-          marginTop: '5px', 
-          marginBottom: '60px',
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '20px', 
-          fontSize: '0.9rem', 
-          color: '#4a5568' 
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#2196f3', 
-              borderRadius: '2px' 
-            }}></div>
-            Temperature (°F)
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#22c55e', 
-              borderRadius: '2px' 
-            }}></div>
-            Humidity (%)
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#f59e0b', 
-              borderRadius: '2px' 
-            }}></div>
-            Precipitation (%)
-          </div>
         </div>
       </div>
     );
