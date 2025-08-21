@@ -217,8 +217,8 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <label htmlFor="start-time-select" style={{ fontSize: '0.9rem', color: '#4a5568', fontWeight: '500' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <label htmlFor="start-time-select" style={{ fontSize: '0.9rem', color: '#4a5568', fontWeight: '500', flexShrink: 0 }}>
             Start Time:
           </label>
           <select
@@ -232,7 +232,11 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
               backgroundColor: 'white',
               fontSize: '0.9rem',
               color: '#374151',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              minWidth: '0',
+              maxWidth: '100%',
+              flexShrink: 1,
+              overflow: 'hidden'
             }}
           >
             {startTimeOptions.map((option) => (
