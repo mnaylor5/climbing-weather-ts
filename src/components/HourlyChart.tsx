@@ -234,7 +234,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
               color: '#374151',
               cursor: 'pointer',
               minWidth: '0',
-              maxWidth: '100%',
+              maxWidth: '90%',
               flexShrink: 1,
               overflow: 'hidden'
             }}
