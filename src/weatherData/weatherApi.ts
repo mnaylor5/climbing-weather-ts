@@ -81,7 +81,9 @@ export async function makeWeatherApiCall(
     longitude: number,
 ): Promise<WeatherApiLocationResponse>{
     const locationUrl = `${weatherUrlBase}${latitude},${longitude}`;
-    const locationResponse = await fetch(locationUrl);
+    const locationResponse = await fetch(locationUrl, {
+        cache: 'no-store'
+    });
     if (!locationResponse.ok) {
         throw new Error(`Error fetching location data for ${latitude},${longitude}: ${locationResponse.statusText}`);
     }

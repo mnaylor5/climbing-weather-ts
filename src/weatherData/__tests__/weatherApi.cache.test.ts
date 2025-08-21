@@ -1,6 +1,7 @@
 import { 
   get12HourForecast, 
   getHourlyForecast,
+  makeWeatherApiCall,
   WeatherApiLocationResponse 
 } from '../weatherApi';
 
@@ -23,6 +24,27 @@ describe('Weather API Cache Behavior', () => {
   });
 
   describe('Cache Control Headers', () => {
+    it('should use no-store cache policy for location API calls to prevent stale URLs', async () => {
+      const mockLocationResponse: WeatherApiLocationResponse = {
+        properties: {
+          forecast: 'https://api.weather.gov/gridpoints/VEF/120,90/forecast',
+          forecastHourly: 'https://api.weather.gov/gridpoints/VEF/120,90/forecast/hourly',
+          forecastGridData: 'https://api.weather.gov/gridpoints/VEF/120,90'
+        }
+      };
+
+      mockFetch.mockResolvedValueOnce({
+        ok: true,
+        json: jest.fn().mockResolvedValue(mockLocationResponse),
+      } as any);
+
+      await makeWeatherApiCall(36.1315, -115.4266);
+
+      expect(fetch).toHaveBeenCalledWith('https://api.weather.gov/points/36.1315,-115.4266', {
+        cache: 'no-store'
+      });
+    });
+
     it('should use no-store cache policy for 12-hour forecast to prevent stale data', async () => {
       const mockResponse = {
         properties: {
