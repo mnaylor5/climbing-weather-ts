@@ -10,23 +10,23 @@ interface HourlyChartProps {
   }>;
 }
 
+// Custom hook to get window width
+const useWindowWidth = () => {
+  const [windowWidth, setWindowWidth] = useState<number>(
+    typeof window !== 'undefined' ? window.innerWidth : 1200
+  );
+
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowWidth;
+};
+
 const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
   const [startTimeOffset, setStartTimeOffset] = useState<number>(0);
-
-  // Custom hook to get window width
-  const useWindowWidth = () => {
-    const [windowWidth, setWindowWidth] = useState<number>(
-      typeof window !== 'undefined' ? window.innerWidth : 1200
-    );
-
-    useEffect(() => {
-      const handleResize = () => setWindowWidth(window.innerWidth);
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    return windowWidth;
-  };
 
   const windowWidth = useWindowWidth();
 
