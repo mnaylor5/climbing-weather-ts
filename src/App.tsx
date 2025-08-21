@@ -13,7 +13,7 @@ function App() {
   const [forecastType, setForecastType] = useState<ForecastType>('12hour');
   
   const { weatherData, loading, error, fetchWeatherData } = useWeatherData();
-  const areas = climbingAreasData as ClimbingAreaData;
+  const areas = useMemo(() => climbingAreasData as ClimbingAreaData, []);
 
   useEffect(() => {
     fetchWeatherData(selectedAreas, forecastType, areas);
