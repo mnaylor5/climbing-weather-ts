@@ -90,7 +90,7 @@ export async function makeWeatherApiCall(
 
 export async function get12HourForecast(locationData: WeatherApiLocationResponse): Promise<ForecastResponse> {
     const forecastResponse = await fetch(locationData.properties.forecast, {
-        cache: 'no-cache'
+        cache: 'no-store'
     });
     if (!forecastResponse.ok) {
         throw new Error(`Error fetching 12-hour forecast: ${forecastResponse.statusText}`);
@@ -100,7 +100,7 @@ export async function get12HourForecast(locationData: WeatherApiLocationResponse
 
 export async function getHourlyForecast(locationData: WeatherApiLocationResponse): Promise<HourlyForecastResponse> {
     const forecastResponse = await fetch(locationData.properties.forecastHourly, {
-        cache: 'no-cache',
+        cache: 'no-store',
     });
     if (!forecastResponse.ok) {
         throw new Error(`Error fetching hourly forecast: ${forecastResponse.statusText}`);
