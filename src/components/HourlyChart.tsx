@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { HourlyForecastResponse } from '../weatherData/weatherApi';
 
 interface HourlyChartProps {
@@ -157,7 +157,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 stroke="#4a5568"
                 fontSize={12}
                 angle={0}
-                height={80}
+                height={40}
                 interval={getResponsiveInterval()}
               />
               <YAxis 
@@ -174,74 +174,49 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}
               />
-              <Legend/>
+              <Legend 
+                verticalAlign="bottom" 
+                height={12}
+                iconType="line"
+                wrapperStyle={{
+                  paddingTop: '0px',
+                  fontSize: '0.9rem',
+                  color: '#4a5568'
+                }}
+                formatter={(value) => (
+                  <span style={{ color: '#4a5568' }}>{value}</span>
+                )}
+              />
               <Line 
                 type="monotone" 
                 dataKey="temperature" 
-                name="Temperature"
                 stroke="#2196f3" 
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#2196f3', strokeWidth: 2, fill: 'white' }}
+                name="Temperature (°F)"
               />
               <Line 
                 type="monotone" 
                 dataKey="humidity" 
-                name="Humidity (%)"
                 stroke="#22c55e" 
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#22c55e', strokeWidth: 2, fill: 'white' }}
+                name="Humidity (%)"
               />
               <Line 
                 type="monotone" 
                 dataKey="precipitation" 
-                name="Precipitation (%)"
                 stroke="#f59e0b" 
                 strokeWidth={2.5}
                 dot={false}
                 activeDot={{ r: 5, stroke: '#f59e0b', strokeWidth: 2, fill: 'white' }}
+                name="Precipitation (%)"
               />
             </LineChart>
           </ResponsiveContainer>
         </div>
-        {/* <div style={{ 
-          marginTop: '0px', 
-          marginBottom: '10px',
-          display: 'flex', 
-          justifyContent: 'center', 
-          gap: '10px', 
-          fontSize: '0.9rem', 
-          color: '#4a5568' 
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#2196f3', 
-              borderRadius: '2px' 
-            }}></div>
-            Temperature (°F)
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#22c55e', 
-              borderRadius: '2px' 
-            }}></div>
-            Humidity (%)
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <div style={{ 
-              width: '16px', 
-              height: '3px', 
-              backgroundColor: '#f59e0b', 
-              borderRadius: '2px' 
-            }}></div>
-            Precipitation (%)
-          </div>
-        </div> */}
       </div>
     );
   };

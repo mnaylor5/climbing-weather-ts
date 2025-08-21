@@ -10,6 +10,19 @@ jest.mock('recharts', () => ({
   YAxis: () => <div data-testid="y-axis" />,
   CartesianGrid: () => <div data-testid="cartesian-grid" />,
   Tooltip: () => <div data-testid="tooltip" />,
+  Legend: ({ formatter }: any) => {
+    // Mock the legend with the formatter function if provided
+    const items = ['Temperature (°F)', 'Humidity (%)', 'Precipitation (%)'];
+    return (
+      <div data-testid="legend">
+        {items.map((item) => 
+          <div key={item}>
+            {formatter ? formatter(item) : <span>{item}</span>}
+          </div>
+        )}
+      </div>
+    );
+  },
   ResponsiveContainer: ({ children }: any) => <div data-testid="responsive-container">{children}</div>,
 }));
 
