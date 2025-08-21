@@ -136,7 +136,7 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
     const chartData = processChartData(areaData.data);
     
     return (
-      <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '40px' : '0' }}>
+      <div key={areaData.areaKey} style={{ marginBottom: index < weatherData.length - 1 ? '60px' : '10px' }}>
         <h2 style={{ color: '#2d3748', fontSize: '1.5rem', fontWeight: '600', marginBottom: '20px' }}>
           {areaData.areaName}: Hourly Forecast
         </h2>
@@ -144,12 +144,6 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={chartData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
             >
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis 
@@ -157,7 +151,6 @@ const HourlyChart: React.FC<HourlyChartProps> = ({ weatherData }) => {
                 stroke="#4a5568"
                 fontSize={12}
                 angle={0}
-                height={40}
                 interval={getResponsiveInterval()}
               />
               <YAxis 
