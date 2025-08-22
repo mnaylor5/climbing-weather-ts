@@ -9,7 +9,7 @@ const HourlyChart = lazy(() => import('./components/HourlyChart'));
 const ForecastTable = lazy(() => import('./components/ForecastTable'));
 
 function App() {
-  const [selectedAreas, setSelectedAreas] = useState<string[]>(['stonefort', 'tensleep']);
+  const [selectedAreas, setSelectedAreas] = useState<string[]>(['stonefort', 'fosterfalls']);
   const [forecastType, setForecastType] = useState<ForecastType>('12hour');
   
   const { weatherData, loading, error, fetchWeatherData } = useWeatherData();

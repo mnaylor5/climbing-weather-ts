@@ -81,7 +81,7 @@ describe('App', () => {
     
     expect(screen.getByText('Climbing Areas')).toBeInTheDocument();
     expect(screen.getByText('Stone Fort (Little Rock City)')).toBeInTheDocument();
-    expect(screen.getByText('Ten Sleep Canyon')).toBeInTheDocument();
+    expect(screen.getByText('Foster Falls')).toBeInTheDocument();
   });
 
   it('renders forecast type toggle buttons', () => {
@@ -98,7 +98,7 @@ describe('App', () => {
   it('loads and displays mock data when API succeeds', async () => {
     mockGetWeatherForArea
       .mockResolvedValueOnce(mock12HourData as any) // For Stone Fort
-      .mockResolvedValueOnce(mock12HourData as any); // For Ten Sleep Canyon
+      .mockResolvedValueOnce(mock12HourData as any); // For Foster Falls
 
     render(<App />);
 
@@ -118,9 +118,9 @@ describe('App', () => {
 
     expect(mockGetWeatherForArea).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: 'Ten Sleep Canyon',
-        latitude: 44.0342,
-        longitude: -107.4503
+        name: 'Foster Falls',
+        latitude: 35.1820,
+        longitude: -85.6791
       }),
       '12hour'
     );
@@ -129,9 +129,9 @@ describe('App', () => {
   it('switches between daily and hourly forecast types', async () => {
     mockGetWeatherForArea
       .mockResolvedValueOnce(mock12HourData as any) // Stone Fort daily
-      .mockResolvedValueOnce(mock12HourData as any) // Ten Sleep daily
+      .mockResolvedValueOnce(mock12HourData as any) // Foster Falls daily
       .mockResolvedValueOnce(mockHourlyData as any) // Stone Fort hourly
-      .mockResolvedValueOnce(mockHourlyData as any); // Ten Sleep hourly
+      .mockResolvedValueOnce(mockHourlyData as any); // Foster Falls hourly
 
     render(<App />);
 
@@ -157,7 +157,7 @@ describe('App', () => {
 
     expect(mockGetWeatherForArea).toHaveBeenNthCalledWith(4,
       expect.objectContaining({
-        name: 'Ten Sleep Canyon'
+        name: 'Foster Falls'
       }),
       'hourly'
     );
@@ -283,8 +283,8 @@ describe('App', () => {
     const stonefortTexts = screen.getAllByText('Stone Fort (Little Rock City)');
     expect(stonefortTexts).toHaveLength(2); // One in tag, one in dropdown
     
-    const tensleepTexts = screen.getAllByText('Ten Sleep Canyon');
-    expect(tensleepTexts).toHaveLength(2); // One in tag, one in dropdown
+    const fosterfallsTexts = screen.getAllByText('Foster Falls');
+    expect(fosterfallsTexts).toHaveLength(2); // One in tag, one in dropdown
   });
 
   it('shows appropriate message when no areas are selected', async () => {
