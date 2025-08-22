@@ -40,5 +40,11 @@
     "latitude": 44.0342,
     "longitude": -107.4503,
     "climbingType": ["sport", "trad"]
+  },
+  "fosterfalls": {
+    "name": "Foster Falls",
+    "latitude": 35.1820,
+    "longitude": -85.6791,
+    "climbingType": ["sport", "trad"]
   }
 }
