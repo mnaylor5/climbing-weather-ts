@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
-import climbingAreasData from '../data/sample-climbing-areas.json';
+import climbingAreasData from '../data/climbing-areas-v1.json';
 import { ClimbingAreaData, ForecastResponse, HourlyForecastResponse } from './weatherData/weatherApi';
 import { useWeatherData, ForecastType } from './hooks/useWeatherData';
 import MultiSelect from './components/MultiSelect';
@@ -9,7 +9,7 @@ const HourlyChart = lazy(() => import('./components/HourlyChart'));
 const ForecastTable = lazy(() => import('./components/ForecastTable'));
 
 function App() {
-  const [selectedAreas, setSelectedAreas] = useState<string[]>(['stonefort', 'fosterfalls']);
+  const [selectedAreas, setSelectedAreas] = useState<string[]>(['tn_stonefortakalittlerockcity', 'tn_fosterfalls']);
   const [forecastType, setForecastType] = useState<ForecastType>('12hour');
   
   const { weatherData, loading, error, fetchWeatherData } = useWeatherData();
