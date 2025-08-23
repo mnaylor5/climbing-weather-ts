@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, lazy, Suspense } from 'react';
-import climbingAreasData from '../data/sample-climbing-areas.json';
+import climbingAreasData from '../data/climbing-areas-v1.json';
 import { ClimbingAreaData, ForecastResponse, HourlyForecastResponse } from './weatherData/weatherApi';
 import { useWeatherData, ForecastType } from './hooks/useWeatherData';
 import MultiSelect from './components/MultiSelect';
