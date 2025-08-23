@@ -80,8 +80,8 @@ describe('App', () => {
     render(<App />);
     
     expect(screen.getByText('Climbing Areas')).toBeInTheDocument();
-    expect(screen.getByText('Stone Fort (Little Rock City)')).toBeInTheDocument();
-    expect(screen.getByText('Foster Falls')).toBeInTheDocument();
+    expect(screen.getByText('TN > Stone Fort (aka Little Rock City)')).toBeInTheDocument();
+    expect(screen.getByText('TN > Foster Falls')).toBeInTheDocument();
   });
 
   it('renders forecast type toggle buttons', () => {
@@ -109,18 +109,18 @@ describe('App', () => {
     // Should be called for both default selected areas
     expect(mockGetWeatherForArea).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: 'Stone Fort (Little Rock City)',
-        latitude: 34.9759,
-        longitude: -85.3397
+        name: 'TN > Stone Fort (aka Little Rock City)',
+        latitude: 35.249735,
+        longitude: -85.21837
       }),
       '12hour'
     );
 
     expect(mockGetWeatherForArea).toHaveBeenCalledWith(
       expect.objectContaining({
-        name: 'Foster Falls',
-        latitude: 35.1820,
-        longitude: -85.6791
+        name: 'TN > Foster Falls',
+        latitude: 35.17824684210526,
+        longitude: -85.6832205263158
       }),
       '12hour'
     );
@@ -150,14 +150,14 @@ describe('App', () => {
     // Should have been called for both areas with hourly forecast type
     expect(mockGetWeatherForArea).toHaveBeenNthCalledWith(3,
       expect.objectContaining({
-        name: 'Stone Fort (Little Rock City)'
+        name: 'TN > Stone Fort (aka Little Rock City)'
       }),
       'hourly'
     );
 
     expect(mockGetWeatherForArea).toHaveBeenNthCalledWith(4,
       expect.objectContaining({
-        name: 'Foster Falls'
+        name: 'TN > Foster Falls'
       }),
       'hourly'
     );
@@ -180,22 +180,22 @@ describe('App', () => {
     const trigger = screen.getByText('2 areas selected');
     fireEvent.click(trigger);
 
-    // Add Red Rock Canyon to selection
-    const redRockOptions = screen.getAllByText('Red Rock Canyon');
-    const redRockCheckboxOption = redRockOptions.find(el => 
+    // Add NV > Red Rocks to selection
+    const redRocksOptions = screen.getAllByText('NV > Red Rocks');
+    const redRocksCheckboxOption = redRocksOptions.find(el => 
       el.parentElement?.querySelector('input[type="checkbox"]')
     );
 
-    if (redRockCheckboxOption) {
-      fireEvent.click(redRockCheckboxOption);
+    if (redRocksCheckboxOption) {
+      fireEvent.click(redRocksCheckboxOption);
     }
 
     await waitFor(() => {
       expect(mockGetWeatherForArea).toHaveBeenCalledWith(
         expect.objectContaining({
-          name: 'Red Rock Canyon',
-          latitude: 36.1315,
-          longitude: -115.4266
+          name: 'NV > Red Rocks',
+          latitude: 36.133434929292925,
+          longitude: -115.45324232323232
         }),
         '12hour'
       );
@@ -272,18 +272,17 @@ describe('App', () => {
     const trigger = screen.getByText('2 areas selected');
     fireEvent.click(trigger);
     
-    // Should have all climbing areas in the dropdown - check for unique text that only appears in dropdown
-    expect(screen.getByText('Red Rock Canyon')).toBeInTheDocument();
-    expect(screen.getByText('Yosemite National Park')).toBeInTheDocument();
-    expect(screen.getByText('Joshua Tree National Park')).toBeInTheDocument();
-    expect(screen.getByText('Eldorado Canyon')).toBeInTheDocument();
-    expect(screen.getByText('The Gunks')).toBeInTheDocument();
+    // Should have climbing areas in the dropdown - check for areas that exist in the JSON file
+    expect(screen.getByText('NV > Red Rocks')).toBeInTheDocument();
+    expect(screen.getByText('CA > Yosemite National Park')).toBeInTheDocument();
+    expect(screen.getByText('CA > Joshua Tree National Park')).toBeInTheDocument();
+    expect(screen.getByText('CO > Eldorado Canyon State Park')).toBeInTheDocument();
     
     // For these two that also appear as tags, check they exist in dropdown by counting
-    const stonefortTexts = screen.getAllByText('Stone Fort (Little Rock City)');
+    const stonefortTexts = screen.getAllByText('TN > Stone Fort (aka Little Rock City)');
     expect(stonefortTexts).toHaveLength(2); // One in tag, one in dropdown
     
-    const fosterfallsTexts = screen.getAllByText('Foster Falls');
+    const fosterfallsTexts = screen.getAllByText('TN > Foster Falls');
     expect(fosterfallsTexts).toHaveLength(2); // One in tag, one in dropdown
   });
 
@@ -341,7 +340,7 @@ describe('App', () => {
     const trigger = screen.getByText('2 areas selected');
     fireEvent.click(trigger);
     
-    const redRockOptions = screen.getAllByText('Red Rock Canyon');
+    const redRockOptions = screen.getAllByText('NV > Red Rocks');
     const redRockCheckboxOption = redRockOptions.find(el => 
       el.parentElement?.querySelector('input[type="checkbox"]')
     );
@@ -365,7 +364,7 @@ describe('App', () => {
     
     // Check the last call was for Red Rock with hourly 
     expect(mockGetWeatherForArea).toHaveBeenLastCalledWith(
-      expect.objectContaining({ name: 'Red Rock Canyon' }),
+      expect.objectContaining({ name: 'NV > Red Rocks' }),
       'hourly'
     );
   }, 10000);
